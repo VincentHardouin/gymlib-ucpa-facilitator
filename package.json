@@ -13,7 +13,12 @@
   "description": "",
   "devDependencies": {
     "@antfu/eslint-config": "^3.6.1",
+    "dotenv": "^16.4.5",
     "eslint": "^9.10.0",
     "eslint-plugin-format": "^0.1.2"
+  },
+  "dependencies": {
+    "imapflow": "^1.0.164",
+    "mailparser": "^3.7.1"
   }
 }
