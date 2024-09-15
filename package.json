@@ -1,0 +1,19 @@
+{
+  "name": "ucpa-facilitator",
+  "version": "0.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@antfu/eslint-config": "^3.6.1",
+    "eslint": "^9.10.0",
+    "eslint-plugin-format": "^0.1.2"
+  }
+}
