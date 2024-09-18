@@ -1,0 +1,11 @@
+services:
+  postgres-ucpa:
+    image: postgres:15.8-alpine
+    container_name: ucpa-postgres
+    ports:
+      - '${UCPA_DATABASE_PORT_API:-5466}:5432'
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_DB: ucpa_facilitator
+    env_file:
+      - .env

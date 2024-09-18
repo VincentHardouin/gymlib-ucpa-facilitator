@@ -4,6 +4,15 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "db:new-migration": "npx knex --knexfile ./db/knexfile.js  migrate:make $migrationname",
+    "db:create": "node ./db/create-database.js",
+    "db:delete": "node ./db/drop-database.js",
+    "db:empty": "node ./db/empty-database.js",
+    "db:migrate": "knex --knexfile ./db/knexfile.js  migrate:latest",
+    "db:rollback:latest": "knex --knexfile ./db/knexfile.js  migrate:down",
+    "db:prepare": "npm run db:delete && npm run db:create && npm run db:migrate",
+    "db:seed": "knex --knexfile ./db/knexfile.js seed:run",
+    "db:reset": "npm run db:prepare && npm run db:seed",
     "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,6 +28,8 @@
   },
   "dependencies": {
     "imapflow": "^1.0.164",
-    "mailparser": "^3.7.1"
+    "knex": "^3.1.0",
+    "mailparser": "^3.7.1",
+    "pg": "^8.13.0"
   }
 }
