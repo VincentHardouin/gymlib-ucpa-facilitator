@@ -31,6 +31,7 @@ class ImapClient {
         messages.push({
           title,
           html: mail.html,
+          text: mail.text,
         });
       }
     }
