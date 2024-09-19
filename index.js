@@ -2,6 +2,7 @@ import { env } from 'node:process';
 import { Reservation } from './src/domain/Reservation.js';
 
 import { ImapClient } from './src/infrastructure/ImapClient.js';
+import { logger } from './src/infrastructure/Logger.js';
 import { reservationRepositories } from './src/infrastructure/ReservationRepositories.js';
 import 'dotenv/config';
 
