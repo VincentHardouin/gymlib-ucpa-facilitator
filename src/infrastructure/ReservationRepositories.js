@@ -1,4 +1,6 @@
-import { knex } from 'src/infrastructure';
+import { knex } from '../../db/knex-database-connection.js';
+import { NotFoundError } from '../domain/NotFoundError.js';
+import { Reservation } from '../domain/Reservation.js';
 
 class ReservationRepositories {
   #knex;
@@ -7,8 +9,28 @@ class ReservationRepositories {
     this.#knex = knex;
   }
 
-  getOrCreate() {
+  async get(code) {
+    const reservation = await this.#knex('reservations').select('*').where({ code }).first();
+    if (!reservation)
+      throw new NotFoundError(`Reservation not found with code ${code}`);
+    return this._toDomain(reservation);
+  }
 
+  async save(reservation) {
+    const { code, status, updatedAt } = reservation;
+    await this.#knex('reservations').insert({ code, status, updated_at: updatedAt }).onConflict('code').merge(['status', 'updated_at']);
+  }
+
+  async getActiveReservations() {
+    const reservations = await this.#knex('reservations')
+      .select('*')
+      .where('status', '!=', Reservation.STATUSES.COMPLETED)
+      .orderBy('created_at', 'asc');
+    return reservations.map(reservation => this._toDomain(reservation));
+  }
+
+  _toDomain(reservationRaw) {
+    return new Reservation({ code: reservationRaw.code, status: reservationRaw.status, updatedAt: reservationRaw.updated_at });
   }
 }
 
