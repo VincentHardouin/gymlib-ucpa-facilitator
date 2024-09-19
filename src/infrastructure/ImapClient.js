@@ -1,35 +1,49 @@
 import { ImapFlow } from 'imapflow';
 import { simpleParser } from 'mailparser';
+import { logger } from './Logger.js';
 
 class ImapClient {
-  #client;
+  #host;
+  #port;
+  #user;
+  #password;
 
   constructor({ host, port, user, password }) {
-    this.#client = new ImapFlow({
-      host,
-      port,
+    this.#host = host;
+    this.#port = port;
+    this.#user = user;
+    this.#password = password;
+  }
+
+  async getConnectedClient() {
+    const client = new ImapFlow({
+      host: this.#host,
+      port: this.#port,
       secure: true,
       auth: {
-        user,
-        pass: password,
+        user: this.#user,
+        pass: this.#password,
       },
       logger: false,
     });
+    await client.connect();
+    return client;
   }
 
   async fetch(searchQuery) {
-    await this.#client.connect();
-    const lock = await this.#client.getMailboxLock('INBOX');
+    const client = await this.getConnectedClient();
+    const lock = await client.getMailboxLock('INBOX');
     const messages = [];
     try {
-      for await (const message of this.#client.fetch(searchQuery, {
+      for await (const message of client.fetch(searchQuery, {
         source: true,
         headers: ['date', 'subject'],
       })) {
         const mail = await simpleParser(message.source);
-        const title = `${mail.date.toISOString().split('T')[0]} - ${mail.subject}`;
         messages.push({
-          title,
+          uid: message.uid,
+          date: mail.date,
+          title: mail.subject,
           html: mail.html,
           text: mail.text,
         });
@@ -38,8 +52,23 @@ class ImapClient {
     finally {
       lock.release();
     }
-    await this.#client.logout();
+    await client.logout();
     return messages;
+  }
+
+  async deleteMail(uid) {
+    logger.info({ uid });
+    const client = await this.getConnectedClient();
+    logger.info('connected');
+    const lock = await client.getMailboxLock('INBOX');
+    logger.info({ uid });
+    try {
+      await client.messageDelete({ uid }, { uid: true });
+    }
+    finally {
+      lock.release();
+    }
+    await client.logout();
   }
 }
 
