@@ -1,53 +1,58 @@
-import { env } from 'node:process';
-import { Reservation } from './src/domain/Reservation.js';
+import { config } from './config.js';
 
+import { ReservationController } from './src/application/ReservationController.js';
+
+import { GetActiveReservationsUseCase } from './src/domain/usecases/GetActiveReservationsUseCase.js';
+import { HandleNewReservationUseCase } from './src/domain/usecases/HandleNewReservationUseCase.js';
+import { NotifyUseCase } from './src/domain/usecases/NotifyUseCase.js';
+import { SubmitFormUseCase } from './src/domain/usecases/SubmitFormUseCase.js';
+import { Browser } from './src/infrastructure/Browser.js';
 import { ImapClient } from './src/infrastructure/ImapClient.js';
-import { logger } from './src/infrastructure/Logger.js';
+import { logger } from './src/infrastructure/logger.js';
+import { NotificationClient } from './src/infrastructure/NotificationClient.js';
 import { reservationRepositories } from './src/infrastructure/ReservationRepositories.js';
+import { TimeSlotDatasource } from './src/infrastructure/TimeSlotDatasource.js';
 import 'dotenv/config';
 
-const imapConfig = {
-  host: env.GYMLIB_MAIL_RECEIVER_IMAP_HOST,
-  port: env.GYMLIB_MAIL_RECEIVER_IMAP_PORT,
-  user: env.GYMLIB_MAIL_RECEIVER_IMAP_USER,
-  password: env.GYMLIB_MAIL_RECEIVER_IMAP_PASSWORD,
-};
+main();
 
 async function main() {
-  const client = new ImapClient(imapConfig);
-  const searchQuery = JSON.parse(env.GYMLIB_MAIL_RECEIVER_IMAP_SEARCH_QUERY);
-  const messages = await client.fetch(searchQuery);
-  for (const message of messages) {
-    const code = getUCPAReservationCode(message);
-    await reservationRepositories.getOrCreate(code);
-  }
-  const reservations = await reservationRepositories.getActiveReservations(code);
-  for (const reservation of reservations) {
-    handleReservation(reservation);
-  }
-}
+  const gymlibImapClient = new ImapClient(config.gymlib.imapConfig);
+  const handleNewReservationUseCase = new HandleNewReservationUseCase({
+    imapClient: gymlibImapClient,
+    searchQuery: config.gymlib.searchQuery,
+  });
 
-function getUCPAReservationCode(message) {
-  const match = message.html.match(/Voici votre code de réservation UCPA : (?<code>\d+)/);
-  if (!match) {
-    return null;
-  }
-  return match.groups.code;
-}
+  const getActiveReservationsUseCase = new GetActiveReservationsUseCase({
+    reservationRepositories,
+  });
 
-function handleReservation(reservation) {
-  switch (reservation.state) {
-    case Reservation.STATES.DEFAULT:
-    case Reservation.STATES.NO_HANDLED:
-    case Reservation.STATES.FORM_ERROR:
-      // form + update state
-    // eslint-disable-next-line no-fallthrough
-    case Reservation.STATES.FORM_SUBMITTED:
-      // rien à faire
-      break;
-    case Reservation.STATES.UCPA_VALIDATED:
-      // Notifier + update state
-    case Reservation.STATES.COMPLETED:
-      break;
-  }
+  const browser = await Browser.create();
+  const submitFormUseCase = new SubmitFormUseCase({
+    browser,
+    reservationRepositories,
+    formInfo: config.ucpa.formInfo,
+  });
+
+  const ucpaImapClient = new ImapClient(config.ucpa.imapConfig);
+  const timeSlotDatasource = new TimeSlotDatasource();
+  const notificationClient = new NotificationClient(config.notification);
+  const notifyUseCase = new NotifyUseCase({
+    imapClient: ucpaImapClient,
+    searchQuery: config.ucpa.searchQuery,
+    reservationRepositories,
+    timeSlotDatasource,
+    notificationClient,
+    timeSlotsPreferences: config.timeSlotsPreferences,
+  });
+
+  const reservationController = new ReservationController({
+    handleNewReservationUseCase,
+    getActiveReservationsUseCase,
+    submitFormUseCase,
+    notifyUseCase,
+    logger,
+  });
+
+  await reservationController.handleReservations();
 }
