@@ -19,7 +19,7 @@ export class ReservationController {
 
     for (const notHandledReservation of notHandledReservations) {
       this.logger.info(`Start - SubmitForm for ${notHandledReservation.code}`);
-      await this.submitFormUseCase.execute(notHandledReservation, true);
+      await this.submitFormUseCase.execute(notHandledReservation);
       this.logger.info(`End - SubmitForm for ${notHandledReservation.code}`);
     }
 
