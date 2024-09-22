@@ -18,11 +18,11 @@ class Reservation {
     return new Reservation({ code, status: Reservation.STATUSES.DEFAULT });
   }
 
-  get shouldSubmitForm() {
+  get isNotHandled() {
     return [STATUSES.DEFAULT, STATUSES.NO_HANDLED, STATUSES.FORM_ERROR].includes(this.status);
   }
 
-  get shouldVerifyUCPAValidation() {
+  get isRequiresValidation() {
     return this.status === STATUSES.FORM_SUBMITTED;
   }
 
@@ -30,16 +30,16 @@ class Reservation {
     return this.status === STATUSES.UCPA_VALIDATED;
   }
 
-  async submitForm() {
-    throw new Error('not implemented yet');
+  markAsSubmitted() {
+    this.status = Reservation.STATUSES.FORM_SUBMITTED;
   }
 
-  async notify() {
-    throw new Error('not implemented yet');
+  markAsValidated() {
+    this.status = Reservation.STATUSES.UCPA_VALIDATED;
   }
 
-  async verifyValidation() {
-    throw new Error('not implemented yet');
+  markAsCompleted() {
+    this.status = Reservation.STATUSES.COMPLETED;
   }
 }
 
