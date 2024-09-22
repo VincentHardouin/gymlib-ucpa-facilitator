@@ -1,5 +1,5 @@
 {
-  "name": "ucpa-facilitator",
+  "name": "gymlib-ucpa-facilitator",
   "type": "module",
   "version": "0.0.0",
   "description": "",
@@ -21,6 +21,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "cron": "^3.1.7",
     "imapflow": "^1.0.164",
     "knex": "^3.1.0",
     "mailparser": "^3.7.1",

@@ -1,7 +1,8 @@
+import { CronJob } from 'cron';
+
 import { config } from './config.js';
 
 import { ReservationController } from './src/application/ReservationController.js';
-
 import { GetActiveReservationsUseCase } from './src/domain/usecases/GetActiveReservationsUseCase.js';
 import { HandleNewReservationUseCase } from './src/domain/usecases/HandleNewReservationUseCase.js';
 import { NotifyUseCase } from './src/domain/usecases/NotifyUseCase.js';
@@ -12,11 +13,26 @@ import { logger } from './src/infrastructure/logger.js';
 import { NotificationClient } from './src/infrastructure/NotificationClient.js';
 import { reservationRepositories } from './src/infrastructure/ReservationRepositories.js';
 import { TimeSlotDatasource } from './src/infrastructure/TimeSlotDatasource.js';
-import 'dotenv/config';
+
+const parisTimezone = 'Europe/Paris';
 
 main();
 
 async function main() {
+  const reservationController = await getReservationController();
+  CronJob.from({
+    cronTime: config.cronTime,
+    onTick: async () => {
+      logger.info('Start job');
+      await reservationController.handleReservations();
+      logger.info('End job');
+    },
+    start: true,
+    timeZone: parisTimezone,
+  });
+}
+
+async function getReservationController() {
   const gymlibImapClient = new ImapClient(config.gymlib.imapConfig);
   const handleNewReservationUseCase = new HandleNewReservationUseCase({
     imapClient: gymlibImapClient,
@@ -32,6 +48,7 @@ async function main() {
     browser,
     reservationRepositories,
     formInfo: config.ucpa.formInfo,
+    dryRun: !config.ucpa.formSubmit,
   });
 
   const ucpaImapClient = new ImapClient(config.ucpa.imapConfig);
@@ -44,15 +61,14 @@ async function main() {
     timeSlotDatasource,
     notificationClient,
     timeSlotsPreferences: config.timeSlotsPreferences,
+    areaId: config.ucpa.areaId,
   });
 
-  const reservationController = new ReservationController({
+  return new ReservationController({
     handleNewReservationUseCase,
     getActiveReservationsUseCase,
     submitFormUseCase,
     notifyUseCase,
     logger,
   });
-
-  await reservationController.handleReservations();
 }
