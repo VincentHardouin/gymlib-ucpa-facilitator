@@ -17,8 +17,11 @@ class ReservationRepositories {
   }
 
   async save(reservation) {
-    const { code, status, updatedAt } = reservation;
-    await this.#knex('reservations').insert({ code, status, updated_at: updatedAt }).onConflict('code').merge(['status', 'updated_at']);
+    const { code, status, updatedAt, start, court, activity } = reservation;
+    await this.#knex('reservations')
+      .insert({ code, status, updated_at: updatedAt, start_at: start, court, activity })
+      .onConflict('code')
+      .merge(['status', 'updated_at', 'start_at', 'court', 'activity']);
   }
 
   async getActiveReservations() {
@@ -30,7 +33,14 @@ class ReservationRepositories {
   }
 
   _toDomain(reservationRaw) {
-    return new Reservation({ code: reservationRaw.code, status: reservationRaw.status, updatedAt: reservationRaw.updated_at });
+    return new Reservation({
+      code: reservationRaw.code,
+      status: reservationRaw.status,
+      updatedAt: reservationRaw.updated_at,
+      start: reservationRaw.start_at,
+      court: reservationRaw.court,
+      activity: reservationRaw.activity,
+    });
   }
 }
 
