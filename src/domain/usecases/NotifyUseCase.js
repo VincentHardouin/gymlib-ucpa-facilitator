@@ -24,7 +24,7 @@ export class NotifyUseCase {
     const timeSlots = await this.timeSlotDatasource.getAllAvailable(this.areaId);
     const convenientTimeSlots = this._getConvientTimeSlots(timeSlots, this.timeSlotsPreferences);
     await this.notificationClient.notify(convenientTimeSlots);
-    reservation.markAsCompleted();
+    reservation.markAsNotified();
     this.reservationRepositories.save(reservation);
   }
 

@@ -4,6 +4,8 @@ const STATUSES = {
   FORM_SUBMITTED: 'form-submitted',
   FORM_ERROR: 'form-error',
   UCPA_VALIDATED: 'validated',
+  NOTIFIED: 'notified',
+  RESERVED: 'reserved',
   COMPLETED: 'completed',
 };
 
@@ -38,8 +40,8 @@ class Reservation {
     this.status = Reservation.STATUSES.UCPA_VALIDATED;
   }
 
-  markAsCompleted() {
-    this.status = Reservation.STATUSES.COMPLETED;
+  markAsNotified() {
+    this.status = Reservation.STATUSES.NOTIFIED;
   }
 }
 
