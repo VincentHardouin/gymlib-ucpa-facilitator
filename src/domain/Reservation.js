@@ -37,14 +37,17 @@ class Reservation {
 
   markAsSubmitted() {
     this.status = Reservation.STATUSES.FORM_SUBMITTED;
+    this.updatedAt = new Date();
   }
 
   markAsValidated() {
     this.status = Reservation.STATUSES.UCPA_VALIDATED;
+    this.updatedAt = new Date();
   }
 
   markAsNotified() {
     this.status = Reservation.STATUSES.NOTIFIED;
+    this.updatedAt = new Date();
   }
 }
 
