@@ -6,9 +6,17 @@ function isFeatureEnabled(environmentVariable) {
   return environmentVariable === 'true';
 }
 
+function getParsedJson(environmentVariable) {
+  if (environmentVariable === undefined) {
+    return undefined;
+  }
+  return JSON.parse(environmentVariable);
+}
+
 function buildConfiguration() {
   const config = {
     environment: env.NODE_ENV || 'development',
+    port: env.PORT || 3000,
     logging: {
       enabled: isFeatureEnabled(env.LOG_ENABLED),
       logLevel: env.LOG_LEVEL || 'info',
@@ -21,7 +29,7 @@ function buildConfiguration() {
         user: env.GYMLIB_MAIL_RECEIVER_IMAP_USER,
         password: env.GYMLIB_MAIL_RECEIVER_IMAP_PASSWORD,
       },
-      searchQuery: JSON.parse(env.GYMLIB_MAIL_RECEIVER_IMAP_SEARCH_QUERY),
+      searchQuery: getParsedJson(env.GYMLIB_MAIL_RECEIVER_IMAP_SEARCH_QUERY),
     },
     ucpa: {
       imapConfig: {
@@ -30,16 +38,19 @@ function buildConfiguration() {
         user: env.UCPA_MAIL_RECEIVER_IMAP_USER,
         password: env.UCPA_MAIL_RECEIVER_IMAP_PASSWORD,
       },
-      searchQuery: JSON.parse(env.UCPA_MAIL_RECEIVER_IMAP_SEARCH_QUERY),
-      formInfo: JSON.parse(env.FORM_RESPONSE),
+      searchQuery: getParsedJson(env.UCPA_MAIL_RECEIVER_IMAP_SEARCH_QUERY),
+      formInfo: getParsedJson(env.FORM_RESPONSE),
       formSubmit: isFeatureEnabled(env.FORM_SUBMIT_ENABLED),
       areaId: env.UCPA_AREA_ID,
     },
     notification: {
-      url: env.NOTFICATION_URL,
-      token: env.NOTFICATION_TOKEN,
+      url: env.NOTIFICATION_URL,
+      token: env.NOTIFICATION_TOKEN,
     },
-    timeSlotsPreferences: JSON.parse(env.TIME_SLOTS_PREFERENCES),
+    calendar: {
+      name: env.CALENDAR_NAME,
+    },
+    timeSlotsPreferences: getParsedJson(env.TIME_SLOTS_PREFERENCES),
   };
   if (config.environment === 'test') {
     config.logging.enabled = false;
@@ -52,6 +63,10 @@ function buildConfiguration() {
 }
 
 function verifyConfig(config) {
+  if (env.NODE_ENV === 'test') {
+    return true;
+  }
+
   let allKeysHaveValues = true;
 
   function checkDeep(object, path) {

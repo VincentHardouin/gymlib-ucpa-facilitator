@@ -4,13 +4,18 @@ const STATUSES = {
   FORM_SUBMITTED: 'form-submitted',
   FORM_ERROR: 'form-error',
   UCPA_VALIDATED: 'validated',
+  NOTIFIED: 'notified',
+  RESERVED: 'reserved',
   COMPLETED: 'completed',
 };
 
 class Reservation {
-  constructor({ code, status, updatedAt }) {
+  constructor({ code, status, start, court, activity, updatedAt }) {
     this.code = code;
     this.status = status;
+    this.start = start;
+    this.court = court;
+    this.activity = activity;
     this.updatedAt = updatedAt;
   }
 
@@ -32,14 +37,25 @@ class Reservation {
 
   markAsSubmitted() {
     this.status = Reservation.STATUSES.FORM_SUBMITTED;
+    this.updatedAt = new Date();
   }
 
   markAsValidated() {
     this.status = Reservation.STATUSES.UCPA_VALIDATED;
+    this.updatedAt = new Date();
   }
 
-  markAsCompleted() {
-    this.status = Reservation.STATUSES.COMPLETED;
+  markAsNotified() {
+    this.status = Reservation.STATUSES.NOTIFIED;
+    this.updatedAt = new Date();
+  }
+
+  markAsReserved({ start, court, activity }) {
+    this.start = start;
+    this.court = court;
+    this.activity = activity;
+    this.status = Reservation.STATUSES.RESERVED;
+    this.updatedAt = new Date();
   }
 }
 

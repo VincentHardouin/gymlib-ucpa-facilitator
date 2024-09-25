@@ -6,15 +6,16 @@ Voici les différentes étapes pour pouvoir préparer correctement sa venue :
 
 ![Les différentes étapes de réservation](./docs/étapes-reservation.png)
 
-Le projet est composé actuellement de 3 grandes étapes :
+Le projet est composé actuellement de 4 grandes étapes :
 
 1. Vérifier qu'une nouvelle réservation a été demandée sur Gymlib
 2. Remplir le formulaire de contremarque UCPA
 3. Recevoir une notification dès que l'UCPA a validé les informations avec des créneaux arrangeants qui sont disponibles
+4. Créer des évènements dans un calendrier et proposer une url pour s'abonner au calendrier `/reservations/calendar`.
 
 A venir :
 
-1. Créer un évènement de calendrier et créer un pass Apple Wallet
+1. Créer un pass Apple Wallet pour chaque évènement
 2. Me notifier de créneaux qui m'arrangent qui se libèrent
 
 La réservation du créneau se fait donc toujours manuellement sur le site de l'UCPA, mais toutes les étapes contraignantes

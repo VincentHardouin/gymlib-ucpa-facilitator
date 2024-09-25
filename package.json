@@ -7,6 +7,9 @@
   "license": "AGPL-3.0",
   "keywords": [],
   "main": "index.js",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "db:new-migration": "npx knex --knexfile ./db/knexfile.js  migrate:make $migrationname",
     "db:create": "node ./db/create-database.js",
@@ -18,14 +21,17 @@
     "db:seed": "knex --knexfile ./db/knexfile.js seed:run",
     "db:reset": "npm run db:prepare && npm run db:seed",
     "lint": "eslint .",
-    "test": "mocha --exit --recursive --reporter=${MOCHA_REPORTER:-dot} tests"
+    "test": "NODE_ENV=test npm run db:reset && NODE_ENV=test mocha --exit --recursive --reporter=${MOCHA_REPORTER:-dot} tests"
   },
   "dependencies": {
+    "@hapi/hapi": "^21.3.10",
     "cron": "^3.1.7",
+    "ical-generator": "^8.0.0",
     "imapflow": "^1.0.164",
     "knex": "^3.1.0",
     "mailparser": "^3.7.1",
     "pg": "^8.13.0",
+    "pino": "^9.4.0",
     "puppeteer": "^23.4.0"
   },
   "devDependencies": {

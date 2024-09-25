@@ -1,9 +1,9 @@
 export class GetActiveReservationsUseCase {
-  constructor({ reservationRepositories }) {
-    this.reservationRepositories = reservationRepositories;
+  constructor({ reservationRepository }) {
+    this.reservationRepository = reservationRepository;
   }
 
   async execute() {
-    return this.reservationRepositories.getActiveReservations();
+    return this.reservationRepository.getActiveReservations();
   }
 }

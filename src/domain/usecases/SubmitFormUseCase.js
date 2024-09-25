@@ -1,9 +1,9 @@
 const CONTREMARQUE_FORM_URL = 'https://sphinx.ucpa.com/surveyserver/s/ucpa/CONTREMARQUE/Gymlib.htm';
 
 export class SubmitFormUseCase {
-  constructor({ browser, reservationRepositories, formInfo, dryRun }) {
+  constructor({ browser, reservationRepository, formInfo, dryRun }) {
     this.browser = browser;
-    this.reservationRepositories = reservationRepositories;
+    this.reservationRepository = reservationRepository;
     this.formInfo = formInfo;
     this.dryRun = dryRun;
   }
@@ -29,6 +29,6 @@ export class SubmitFormUseCase {
     await this.browser.browser.close();
 
     reservation.markAsSubmitted();
-    await this.reservationRepositories.save(reservation);
+    await this.reservationRepository.save(reservation);
   }
 }

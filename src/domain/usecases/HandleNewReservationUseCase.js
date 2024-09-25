@@ -1,4 +1,4 @@
-import { reservationRepositories } from '../../infrastructure/ReservationRepositories.js';
+import { reservationRepository } from '../../infrastructure/ReservationRepository.js';
 import { NotFoundError } from '../NotFoundError.js';
 import { Reservation } from '../Reservation.js';
 
@@ -29,12 +29,12 @@ export class HandleNewReservationUseCase {
 
   async _createReservationIfNotExists(code) {
     try {
-      await reservationRepositories.get(code);
+      await reservationRepository.get(code);
     }
     catch (e) {
       if (e instanceof NotFoundError) {
         const reservation = Reservation.createFromCode(code);
-        await reservationRepositories.save(reservation);
+        await reservationRepository.save(reservation);
         return;
       }
       throw e;
