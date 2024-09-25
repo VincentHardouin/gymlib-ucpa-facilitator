@@ -36,8 +36,8 @@ function buildConfiguration() {
       areaId: env.UCPA_AREA_ID,
     },
     notification: {
-      url: env.NOTFICATION_URL,
-      token: env.NOTFICATION_TOKEN,
+      url: env.NOTIFICATION_URL,
+      token: env.NOTIFICATION_TOKEN,
     },
     timeSlotsPreferences: JSON.parse(env.TIME_SLOTS_PREFERENCES),
   };
