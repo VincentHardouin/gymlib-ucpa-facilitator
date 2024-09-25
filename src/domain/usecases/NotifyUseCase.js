@@ -2,10 +2,10 @@ const VALIDATION_SUBJECT = 'UCPA Contremarque';
 const VALIDATION_TEXT = 'Tu peux dès à présent retrouver ton e-billet sur le site internet de ton centre';
 
 export class NotifyUseCase {
-  constructor({ imapClient, searchQuery, reservationRepositories, timeSlotDatasource, notificationClient, timeSlotsPreferences, areaId }) {
+  constructor({ imapClient, searchQuery, reservationRepository, timeSlotDatasource, notificationClient, timeSlotsPreferences, areaId }) {
     this.imapClient = imapClient;
     this.searchQuery = searchQuery;
-    this.reservationRepositories = reservationRepositories;
+    this.reservationRepository = reservationRepository;
     this.timeSlotDatasource = timeSlotDatasource;
     this.notificationClient = notificationClient;
     this.timeSlotsPreferences = timeSlotsPreferences;
@@ -14,7 +14,7 @@ export class NotifyUseCase {
 
   async execute(reservation) {
     if (reservation.isRequiresValidation) {
-      await this._verifyValidation(reservation, this.reservationRepositories, this.imapClient);
+      await this._verifyValidation(reservation, this.reservationRepository, this.imapClient);
     }
 
     if (!reservation.isValidated) {
@@ -25,7 +25,7 @@ export class NotifyUseCase {
     const convenientTimeSlots = this._getConvientTimeSlots(timeSlots, this.timeSlotsPreferences);
     await this.notificationClient.notify(convenientTimeSlots);
     reservation.markAsNotified();
-    this.reservationRepositories.save(reservation);
+    await this.reservationRepository.save(reservation);
   }
 
   async _verifyValidation(reservation, reservationRepositories, imapClient) {

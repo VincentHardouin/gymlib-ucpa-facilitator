@@ -11,7 +11,7 @@ import { Browser } from './src/infrastructure/Browser.js';
 import { ImapClient } from './src/infrastructure/ImapClient.js';
 import { logger } from './src/infrastructure/logger.js';
 import { NotificationClient } from './src/infrastructure/NotificationClient.js';
-import { reservationRepositories } from './src/infrastructure/ReservationRepositories.js';
+import { reservationRepository } from './src/infrastructure/ReservationRepository.js';
 import { TimeSlotDatasource } from './src/infrastructure/TimeSlotDatasource.js';
 
 const parisTimezone = 'Europe/Paris';
@@ -40,13 +40,13 @@ async function getReservationController() {
   });
 
   const getActiveReservationsUseCase = new GetActiveReservationsUseCase({
-    reservationRepositories,
+    reservationRepository,
   });
 
   const browser = await Browser.create();
   const submitFormUseCase = new SubmitFormUseCase({
     browser,
-    reservationRepositories,
+    reservationRepository,
     formInfo: config.ucpa.formInfo,
     dryRun: !config.ucpa.formSubmit,
   });
@@ -57,7 +57,7 @@ async function getReservationController() {
   const notifyUseCase = new NotifyUseCase({
     imapClient: ucpaImapClient,
     searchQuery: config.ucpa.searchQuery,
-    reservationRepositories,
+    reservationRepository,
     timeSlotDatasource,
     notificationClient,
     timeSlotsPreferences: config.timeSlotsPreferences,

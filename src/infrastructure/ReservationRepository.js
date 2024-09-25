@@ -2,7 +2,7 @@ import { knex } from '../../db/knex-database-connection.js';
 import { NotFoundError } from '../domain/NotFoundError.js';
 import { Reservation } from '../domain/Reservation.js';
 
-class ReservationRepositories {
+class ReservationRepository {
   #knex;
 
   constructor(knex) {
@@ -52,4 +52,4 @@ class ReservationRepositories {
   }
 }
 
-export const reservationRepositories = new ReservationRepositories(knex);
+export const reservationRepository = new ReservationRepository(knex);
