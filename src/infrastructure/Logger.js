@@ -1,12 +1,12 @@
-class Logger {
-  info(msg) {
-    // eslint-disable-next-line no-console
-    console.info(msg);
-  }
+import * as pino from 'pino';
+import { stdSerializers } from 'pino';
+import { config } from '../../config.js';
 
-  error(msg) {
-    console.error(msg);
-  }
-}
-
-export const logger = new Logger();
+export const logger = pino.default(
+  {
+    level: config.logging.logLevel,
+    redact: ['req.headers.authorization'],
+    enabled: config.logging.enabled,
+    serializers: Object.assign(Object.create(null), stdSerializers),
+  },
+);

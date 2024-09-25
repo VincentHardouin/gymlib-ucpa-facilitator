@@ -21,12 +21,14 @@
     "test": "mocha --exit --recursive --reporter=${MOCHA_REPORTER:-dot} tests"
   },
   "dependencies": {
+    "@hapi/hapi": "^21.3.10",
     "cron": "^3.1.7",
     "ical-generator": "^8.0.0",
     "imapflow": "^1.0.164",
     "knex": "^3.1.0",
     "mailparser": "^3.7.1",
     "pg": "^8.13.0",
+    "pino": "^9.4.0",
     "puppeteer": "^23.4.0"
   },
   "devDependencies": {
