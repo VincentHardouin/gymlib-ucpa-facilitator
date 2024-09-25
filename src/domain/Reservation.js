@@ -49,6 +49,14 @@ class Reservation {
     this.status = Reservation.STATUSES.NOTIFIED;
     this.updatedAt = new Date();
   }
+
+  markAsReserved({ start, court, activity }) {
+    this.start = start;
+    this.court = court;
+    this.activity = activity;
+    this.status = Reservation.STATUSES.RESERVED;
+    this.updatedAt = new Date();
+  }
 }
 
 Reservation.STATUSES = STATUSES;

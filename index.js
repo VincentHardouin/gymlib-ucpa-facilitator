@@ -5,6 +5,7 @@ import { config } from './config.js';
 import { ReservationController } from './src/application/ReservationController.js';
 import { GetActiveReservationsUseCase } from './src/domain/usecases/GetActiveReservationsUseCase.js';
 import { HandleNewReservationUseCase } from './src/domain/usecases/HandleNewReservationUseCase.js';
+import { HandleScheduledReservationUseCase } from './src/domain/usecases/HandleScheduledReservationUseCase.js';
 import { NotifyUseCase } from './src/domain/usecases/NotifyUseCase.js';
 import { SubmitFormUseCase } from './src/domain/usecases/SubmitFormUseCase.js';
 import { Browser } from './src/infrastructure/Browser.js';
@@ -64,11 +65,18 @@ async function getReservationController() {
     areaId: config.ucpa.areaId,
   });
 
+  const handleScheduledReservationUseCase = new HandleScheduledReservationUseCase({
+    imapClient: ucpaImapClient,
+    searchQuery: config.ucpa.searchQuery,
+    reservationRepository,
+  });
+
   return new ReservationController({
     handleNewReservationUseCase,
     getActiveReservationsUseCase,
     submitFormUseCase,
     notifyUseCase,
+    handleScheduledReservationUseCase,
     logger,
   });
 }

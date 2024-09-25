@@ -1,9 +1,10 @@
 export class ReservationController {
-  constructor({ handleNewReservationUseCase, getActiveReservationsUseCase, submitFormUseCase, notifyUseCase, logger }) {
+  constructor({ handleNewReservationUseCase, getActiveReservationsUseCase, submitFormUseCase, notifyUseCase, handleScheduledReservationUseCase, logger }) {
     this.handleNewReservationUseCase = handleNewReservationUseCase;
     this.getActiveReservationsUseCase = getActiveReservationsUseCase;
     this.submitFormUseCase = submitFormUseCase;
     this.notifyUseCase = notifyUseCase;
+    this.handleScheduledReservationUseCase = handleScheduledReservationUseCase;
     this.logger = logger;
   }
 
@@ -29,5 +30,9 @@ export class ReservationController {
       await this.notifyUseCase.execute(submittedReservation);
       this.logger.info(`End - Notify for ${submittedReservation.code}`);
     }
+
+    this.logger.info('Start - HandleScheduledReservations');
+    await this.handleScheduledReservationUseCase.execute();
+    this.logger.info('End - HandleScheduledReservations');
   }
 }
