@@ -9,6 +9,7 @@ function isFeatureEnabled(environmentVariable) {
 function buildConfiguration() {
   const config = {
     environment: env.NODE_ENV || 'development',
+    port: env.PORT || 3000,
     logging: {
       enabled: isFeatureEnabled(env.LOG_ENABLED),
       logLevel: env.LOG_LEVEL || 'info',
@@ -38,6 +39,9 @@ function buildConfiguration() {
     notification: {
       url: env.NOTIFICATION_URL,
       token: env.NOTIFICATION_TOKEN,
+    },
+    calendar: {
+      name: env.CALENDAR_NAME,
     },
     timeSlotsPreferences: JSON.parse(env.TIME_SLOTS_PREFERENCES),
   };

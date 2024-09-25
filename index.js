@@ -2,13 +2,17 @@ import { CronJob } from 'cron';
 
 import { config } from './config.js';
 
+import { createServer } from './server.js';
 import { ReservationController } from './src/application/ReservationController.js';
+import { CreateReservationEventsUseCase } from './src/domain/usecases/CreateReservationEventsUseCase.js';
 import { GetActiveReservationsUseCase } from './src/domain/usecases/GetActiveReservationsUseCase.js';
+import { GetAllEventsUseCase } from './src/domain/usecases/GetAllEventsUseCase.js';
 import { HandleNewReservationUseCase } from './src/domain/usecases/HandleNewReservationUseCase.js';
 import { HandleScheduledReservationUseCase } from './src/domain/usecases/HandleScheduledReservationUseCase.js';
 import { NotifyUseCase } from './src/domain/usecases/NotifyUseCase.js';
 import { SubmitFormUseCase } from './src/domain/usecases/SubmitFormUseCase.js';
 import { Browser } from './src/infrastructure/Browser.js';
+import { CalendarRepository } from './src/infrastructure/CalendarRepository.js';
 import { ImapClient } from './src/infrastructure/ImapClient.js';
 import { logger } from './src/infrastructure/logger.js';
 import { NotificationClient } from './src/infrastructure/NotificationClient.js';
@@ -31,6 +35,8 @@ async function main() {
     start: true,
     timeZone: parisTimezone,
   });
+  const server = await createServer({ reservationController });
+  await server.start();
 }
 
 async function getReservationController() {
@@ -71,12 +77,23 @@ async function getReservationController() {
     reservationRepository,
   });
 
+  const calendarRepository = new CalendarRepository(config.calendar.name);
+
+  const createReservationEventsUseCase = new CreateReservationEventsUseCase({
+    reservationRepository,
+    calendarRepository,
+  });
+
+  const getAllEventsUseCase = new GetAllEventsUseCase({ calendarRepository });
+
   return new ReservationController({
     handleNewReservationUseCase,
     getActiveReservationsUseCase,
     submitFormUseCase,
     notifyUseCase,
     handleScheduledReservationUseCase,
+    createReservationEventsUseCase,
+    getAllEventsUseCase,
     logger,
   });
 }

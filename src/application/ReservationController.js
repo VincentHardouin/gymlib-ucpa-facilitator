@@ -1,11 +1,26 @@
 export class ReservationController {
-  constructor({ handleNewReservationUseCase, getActiveReservationsUseCase, submitFormUseCase, notifyUseCase, handleScheduledReservationUseCase, logger }) {
+  constructor({
+    handleNewReservationUseCase,
+    getActiveReservationsUseCase,
+    submitFormUseCase,
+    notifyUseCase,
+    handleScheduledReservationUseCase,
+    createReservationEventsUseCase,
+    getAllEventsUseCase,
+    logger,
+  }) {
     this.handleNewReservationUseCase = handleNewReservationUseCase;
     this.getActiveReservationsUseCase = getActiveReservationsUseCase;
     this.submitFormUseCase = submitFormUseCase;
     this.notifyUseCase = notifyUseCase;
     this.handleScheduledReservationUseCase = handleScheduledReservationUseCase;
+    this.createReservationEventsUseCase = createReservationEventsUseCase;
+    this.getAllEventsUseCase = getAllEventsUseCase;
     this.logger = logger;
+  }
+
+  async getCalendar() {
+    return this.getAllEventsUseCase.execute();
   }
 
   async handleReservations() {
@@ -34,5 +49,9 @@ export class ReservationController {
     this.logger.info('Start - HandleScheduledReservations');
     await this.handleScheduledReservationUseCase.execute();
     this.logger.info('End - HandleScheduledReservations');
+
+    this.logger.info('Start - CreateReservationEventsUseCase');
+    await this.createReservationEventsUseCase.execute();
+    this.logger.info('End - CreateReservationEventsUseCase');
   }
 }
