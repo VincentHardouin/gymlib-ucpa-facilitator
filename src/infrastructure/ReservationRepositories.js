@@ -32,6 +32,14 @@ class ReservationRepositories {
     return reservations.map(reservation => this._toDomain(reservation));
   }
 
+  async findByStatus(status) {
+    const reservations = await this.#knex('reservations')
+      .select('*')
+      .where('status', '=', status)
+      .orderBy('created_at', 'asc');
+    return reservations.map(reservation => this._toDomain(reservation));
+  }
+
   _toDomain(reservationRaw) {
     return new Reservation({
       code: reservationRaw.code,
