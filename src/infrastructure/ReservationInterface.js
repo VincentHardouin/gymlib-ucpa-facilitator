@@ -1,3 +1,5 @@
+import { config } from '../../config.js';
+
 export class ReservationInterface {
   constructor({ reservationController }) {
     this.reservationController = reservationController;
@@ -7,7 +9,7 @@ export class ReservationInterface {
     server.route([
       {
         method: 'GET',
-        path: '/reservations/calendar',
+        path: `/reservations/calendar/${config.calendar.id}`,
         options: {
           handler: async (_, h) => {
             const calendar = await this.reservationController.getCalendar();

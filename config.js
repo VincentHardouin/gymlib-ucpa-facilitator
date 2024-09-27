@@ -49,6 +49,7 @@ function buildConfiguration() {
     },
     calendar: {
       name: env.CALENDAR_NAME,
+      id: env.CALENDAR_ID,
     },
     timeSlotsPreferences: getParsedJson(env.TIME_SLOTS_PREFERENCES),
   };
