@@ -21,6 +21,7 @@
     "db:seed": "knex --knexfile ./db/knexfile.js seed:run",
     "db:reset": "npm run db:prepare && npm run db:seed",
     "lint": "eslint .",
+    "start": "node index.js",
     "test": "NODE_ENV=test npm run db:reset && NODE_ENV=test mocha --exit --recursive --reporter=${MOCHA_REPORTER:-dot} tests"
   },
   "dependencies": {
