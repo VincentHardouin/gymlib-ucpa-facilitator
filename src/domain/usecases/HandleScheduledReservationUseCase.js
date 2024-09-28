@@ -1,6 +1,10 @@
 import { NotFoundError } from '../NotFoundError.js';
 import { Reservation } from '../Reservation.js';
 
+const RESERVATION_ACCEPTED_MESSAGE_CONTENT = 'MERCI POUR VOTRE RESERVATION !';
+const EXTRACT_INFORMATION_REGEXP = /Terrain (?<court>\d+) (?<activity>\w+)\s\w+ le (?<date>\d{2}-\d{2}-\d{4}) à (?<hour>\d{2}:\d{2})/;
+const EXTRACT_CODE_REGEXP = /<p>(?<code>\d+)<\/p>/;
+
 export class HandleScheduledReservationUseCase {
   constructor({ imapClient, searchQuery, reservationRepository }) {
     this.imapClient = imapClient;
@@ -11,7 +15,7 @@ export class HandleScheduledReservationUseCase {
   async execute() {
     const messages = await this.imapClient.fetch(this.searchQuery);
     for (const message of messages) {
-      const isScheduledReservationMessage = message.html.includes('MERCI POUR VOTRE RESERVATION !');
+      const isScheduledReservationMessage = message.html.includes(RESERVATION_ACCEPTED_MESSAGE_CONTENT);
       if (!isScheduledReservationMessage) {
         continue;
       }
@@ -24,12 +28,12 @@ export class HandleScheduledReservationUseCase {
   }
 
   _getInformation(message) {
-    const match = message.html.match(/Terrain (?<court>\d+) (?<activity>\w+)\s\w+ le (?<date>\d{2}-\d{2}-\d{4}) à (?<hour>\d{2}:\d{2})/);
+    const match = message.html.match(EXTRACT_INFORMATION_REGEXP);
     if (!match) {
       return null;
     }
 
-    const matchCode = message.html.match(/<p>(?<code>\d+)<\/p>/);
+    const matchCode = message.html.match(EXTRACT_CODE_REGEXP);
     if (!matchCode) {
       return null;
     }

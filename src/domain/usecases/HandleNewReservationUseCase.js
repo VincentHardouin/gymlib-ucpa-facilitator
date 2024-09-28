@@ -2,6 +2,8 @@ import { reservationRepository } from '../../infrastructure/ReservationRepositor
 import { NotFoundError } from '../NotFoundError.js';
 import { Reservation } from '../Reservation.js';
 
+const CODE_REGEXP = /Voici votre code de réservation UCPA : (?<code>\d+)/;
+
 export class HandleNewReservationUseCase {
   constructor({ imapClient, searchQuery }) {
     this.imapClient = imapClient;
@@ -20,7 +22,7 @@ export class HandleNewReservationUseCase {
   }
 
   _getUCPAReservationCode(message) {
-    const match = message.html.match(/Voici votre code de réservation UCPA : (?<code>\d+)/);
+    const match = message.html.match(CODE_REGEXP);
     if (!match) {
       return null;
     }
