@@ -36,6 +36,7 @@ export class PassInterface {
           pre: [{ method: (request, h) => { return this.authService.validateFromPass(request, h); } }],
           handler: async (request, h) => {
             // cf: https://developer.apple.com/documentation/walletpasses/send-an-updated-pass
+            return this.passController.getUpdated(request, h);
           },
           tags: ['api', 'pass'],
         },

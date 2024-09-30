@@ -7,6 +7,7 @@ export class ReservationController {
     handleScheduledReservationUseCase,
     createReservationEventsUseCase,
     getAllEventsUseCase,
+    handleNextReservationUseCase,
     logger,
   }) {
     this.handleNewReservationUseCase = handleNewReservationUseCase;
@@ -16,6 +17,7 @@ export class ReservationController {
     this.handleScheduledReservationUseCase = handleScheduledReservationUseCase;
     this.createReservationEventsUseCase = createReservationEventsUseCase;
     this.getAllEventsUseCase = getAllEventsUseCase;
+    this.handleNextReservationUseCase = handleNextReservationUseCase;
     this.logger = logger;
   }
 
@@ -53,5 +55,9 @@ export class ReservationController {
     this.logger.info('Start - CreateReservationEventsUseCase');
     await this.createReservationEventsUseCase.execute();
     this.logger.info('End - CreateReservationEventsUseCase');
+
+    this.logger.info('Start - HandleNextReservationUseCase');
+    await this.handleNextReservationUseCase.execute();
+    this.logger.info('End - HandleNextReservationUseCase');
   }
 }

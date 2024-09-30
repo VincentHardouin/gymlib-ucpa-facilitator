@@ -1,15 +1,22 @@
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc.js';
+
+dayjs.extend(utc);
+
 export class PassController {
   constructor({
     registerPassUpdateUseCase,
     unregisterPassUpdateUseCase,
     getUpdatedPassUseCase,
     findUpdatablePassesUseCase,
+    passAdapter,
     logger,
   }) {
     this.registerPassUpdateUseCase = registerPassUpdateUseCase;
     this.unregisterPassUpdateUseCase = unregisterPassUpdateUseCase;
     this.getUpdatedPassUseCase = getUpdatedPassUseCase;
     this.findUpdatablePassesUseCase = findUpdatablePassesUseCase;
+    this.passAdapter = passAdapter;
     this.logger = logger;
   }
 
@@ -38,5 +45,13 @@ export class PassController {
       return h.response().code(204);
     }
     return h.response({ serialNumbers, lastUpdated }).code(200);
+  }
+
+  async getUpdated(request, h) {
+    const { passTypeIdentifier, serialNumber } = request.params;
+    const updatedReservationPass = await this.getUpdatedPassUseCase.execute({ passTypeIdentifier, serialNumber });
+    const pass = await this.passAdapter.get(updatedReservationPass);
+    const lastUpdated = dayjs(updatedReservationPass.updatedAt).utc().format('ddd, DD, MMM, YYYY HH:mm:ss');
+    return h.response(pass).code(200).type('application/vnd.apple.pkpass').header('Last-Updated', `${lastUpdated} GMT`);
   }
 }

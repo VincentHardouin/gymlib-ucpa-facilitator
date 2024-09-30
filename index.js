@@ -18,6 +18,7 @@ import { logger } from './src/infrastructure/logger.js';
 import { NotificationClient } from './src/infrastructure/NotificationClient.js';
 import { reservationRepository } from './src/infrastructure/ReservationRepository.js';
 import { TimeSlotDatasource } from './src/infrastructure/TimeSlotDatasource.js';
+import {HandleNextReservationUseCase} from './src/domain/usecases/HandleNextReservationUseCase.js';
 
 const parisTimezone = 'Europe/Paris';
 
@@ -86,6 +87,11 @@ async function getReservationController() {
 
   const getAllEventsUseCase = new GetAllEventsUseCase({ calendarRepository });
 
+  const handleNextReservationUseCase = new HandleNextReservationUseCase({
+    reservationRepository,
+    passRepository,
+  })
+
   return new ReservationController({
     handleNewReservationUseCase,
     getActiveReservationsUseCase,
@@ -94,6 +100,7 @@ async function getReservationController() {
     handleScheduledReservationUseCase,
     createReservationEventsUseCase,
     getAllEventsUseCase,
+    handleNextReservationUseCase,
     logger,
   });
 }
