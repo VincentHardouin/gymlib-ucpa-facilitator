@@ -24,7 +24,7 @@ export class PassInterface {
         options: {
           handler: async (request, h) => {
             // cf: https://developer.apple.com/documentation/walletpasses/get-the-list-of-updatable-passes
-            const { passesUpdatedSince } = request.query;
+            return this.passController.findUpdatable(request, h);
           },
           tags: ['api', 'pass'],
         },
