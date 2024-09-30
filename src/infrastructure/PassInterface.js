@@ -47,6 +47,7 @@ export class PassInterface {
           pre: [{ method: (request, h) => { return this.authService.validateFromPass(request, h); } }],
           handler: async (request, h) => {
             // cf: https://developer.apple.com/documentation/walletpasses/unregister-a-pass-for-update-notifications
+            return this.passController.unregister(request, h);
           },
           tags: ['api', 'pass'],
         },

@@ -22,4 +22,10 @@ export class PassController {
     }
     return h.response().code(200);
   }
+
+  async unregister(request, h) {
+    const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = request.params;
+    await this.unregisterPassUpdateUseCase.execute({ deviceLibraryIdentifier, passTypeIdentifier, serialNumber });
+    return h.response().code(200);
+  }
 }
