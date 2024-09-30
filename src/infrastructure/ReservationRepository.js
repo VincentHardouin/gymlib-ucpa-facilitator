@@ -40,6 +40,19 @@ class ReservationRepository {
     return reservations.map(reservation => this._toDomain(reservation));
   }
 
+  async getNextEvent() {
+    const reservation = await this.#knex('reservations')
+      .select('*')
+      .where('status', '=', Reservation.STATUSES.RESERVED)
+      .andWhere('start_at', '>', new Date())
+      .orderBy('start_at', 'asc')
+      .first();
+    if (!reservation) {
+      throw new NotFoundError();
+    }
+    return this._toDomain(reservation);
+  }
+
   _toDomain(reservationRaw) {
     return new Reservation({
       code: reservationRaw.code,
