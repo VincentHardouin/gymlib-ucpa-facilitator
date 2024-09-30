@@ -53,6 +53,27 @@ export class PassInterface {
           tags: ['api', 'pass'],
         },
       },
+      {
+        method: 'POST',
+        path: '/v1/log',
+        options: {
+          handler: async (request, h) => {
+            // cf: https://developer.apple.com/documentation/walletpasses/log-a-message
+            return this.passController.log(request, h);
+          },
+          tags: ['api', 'pass'],
+        },
+      },
+      {
+        method: 'GET',
+        path: '/pass',
+        options: {
+          handler: async (request, h) => {
+            return this.passController.create(request, h);
+          },
+          tags: ['api', 'pass'],
+        },
+      },
     ]);
   }
 }
