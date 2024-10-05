@@ -19,7 +19,7 @@ export class TimeSlot {
   }
 
   isConvenient(timeSlotsPreferences) {
-    return timeSlotsPreferences[this.dayOfWeek].includes(this.startTime);
+    return timeSlotsPreferences[this.dayOfWeek]?.includes(this.startTime);
   }
 
   isMoreConvenient(slotToCompare, timeSlotsPreferences) {
