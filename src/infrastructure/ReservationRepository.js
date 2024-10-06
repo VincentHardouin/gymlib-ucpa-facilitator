@@ -1,5 +1,5 @@
 import { knex } from '../../db/knex-database-connection.js';
-import { NotFoundError } from '../domain/NotFoundError.js';
+import { NotFoundError } from '../domain/Errors.js';
 import { Reservation } from '../domain/Reservation.js';
 
 class ReservationRepository {
@@ -38,6 +38,19 @@ class ReservationRepository {
       .where('status', '=', status)
       .orderBy('created_at', 'asc');
     return reservations.map(reservation => this._toDomain(reservation));
+  }
+
+  async getNextEvent() {
+    const reservation = await this.#knex('reservations')
+      .select('*')
+      .where('status', '=', Reservation.STATUSES.RESERVED)
+      .andWhere('start_at', '>', new Date())
+      .orderBy('start_at', 'asc')
+      .first();
+    if (!reservation) {
+      throw new NotFoundError();
+    }
+    return this._toDomain(reservation);
   }
 
   _toDomain(reservationRaw) {

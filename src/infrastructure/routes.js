@@ -1,3 +1,4 @@
+import { PassInterface } from './PassInterface.js';
 import { ReservationInterface } from './ReservationInterface.js';
 
-export const routes = [ReservationInterface];
+export const routes = [ReservationInterface, PassInterface];

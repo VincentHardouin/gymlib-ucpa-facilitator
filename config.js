@@ -17,6 +17,8 @@ function buildConfiguration() {
   const config = {
     environment: env.NODE_ENV || 'development',
     port: env.PORT || 3000,
+    baseURL: env.BASE_URL || 'http://example.net',
+    secret: env.SECRET,
     logging: {
       enabled: isFeatureEnabled(env.LOG_ENABLED),
       logLevel: env.LOG_LEVEL || 'info',
@@ -52,9 +54,18 @@ function buildConfiguration() {
       id: env.CALENDAR_ID,
     },
     timeSlotsPreferences: getParsedJson(env.TIME_SLOTS_PREFERENCES),
+    certificates: {
+      signerKeyPassphrase: env.CERTIFICATES_SIGNER_KEY_PASSPHRASE,
+    },
+    pass: {
+      passTypeIdentifier: env.PASS_TYPE_IDENTIFIER,
+      teamIdentifier: env.PASS_TEAM_IDENTIFIER,
+    },
   };
   if (config.environment === 'test') {
     config.logging.enabled = false;
+    config.secret = 'SECRET_FOR_TESTS';
+    config.pass.passTypeIdentifier = 'pass-identifier';
   }
 
   if (!verifyConfig(config)) {

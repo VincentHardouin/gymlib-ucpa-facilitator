@@ -25,12 +25,16 @@
     "test": "NODE_ENV=test npm run db:reset && NODE_ENV=test mocha --exit --recursive --reporter=${MOCHA_REPORTER:-dot} tests"
   },
   "dependencies": {
+    "@hapi/boom": "^10.0.1",
     "@hapi/hapi": "^21.3.10",
     "cron": "^3.1.7",
+    "dayjs": "^1.11.13",
     "ical-generator": "^8.0.0",
     "imapflow": "^1.0.164",
+    "jsonwebtoken": "^9.0.2",
     "knex": "^3.1.0",
     "mailparser": "^3.7.1",
+    "passkit-generator": "^3.1.11",
     "pg": "^8.13.0",
     "pino": "^9.4.0",
     "puppeteer": "^23.4.0"

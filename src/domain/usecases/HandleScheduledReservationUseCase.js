@@ -1,4 +1,4 @@
-import { NotFoundError } from '../NotFoundError.js';
+import { NotFoundError } from '../Errors.js';
 import { Reservation } from '../Reservation.js';
 
 const RESERVATION_ACCEPTED_MESSAGE_CONTENT = 'MERCI POUR VOTRE RESERVATION !';
