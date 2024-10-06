@@ -1,5 +1,5 @@
 import { reservationRepository } from '../../infrastructure/ReservationRepository.js';
-import { NotFoundError } from '../NotFoundError.js';
+import { NotFoundError } from '../Errors.js';
 import { Reservation } from '../Reservation.js';
 
 const CODE_REGEXP = /Voici votre code de réservation UCPA : (?<code>\d+)/;

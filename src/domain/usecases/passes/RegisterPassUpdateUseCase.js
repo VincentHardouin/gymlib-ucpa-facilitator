@@ -1,4 +1,4 @@
-import { NotFoundError } from '../../NotFoundError.js';
+import { NotFoundError } from '../../Errors.js';
 
 export class RegisterPassUpdateUseCase {
   constructor({ deviceRepository, registrationRepository, passRepository }) {
