@@ -18,7 +18,8 @@ class JsonWebTokenService {
     const authorizationHeader = request.headers.authorization;
     if (!authorizationHeader) {
       return '';
-    } else if (!authorizationHeader.startsWith('Bearer ') && !authorizationHeader.startsWith('ApplePass ')) {
+    }
+    else if (!authorizationHeader.startsWith('Bearer ') && !authorizationHeader.startsWith('ApplePass ')) {
       return '';
     }
     return authorizationHeader.replace('Bearer ', '').replace('ApplePass ', '');
