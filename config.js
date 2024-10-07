@@ -15,7 +15,7 @@ function getParsedJson(environmentVariable) {
 function buildConfiguration() {
   const config = {
     environment: env.NODE_ENV || 'development',
-    port: env.PORT || 3000,
+    port: env.PORT || 4000,
     baseURL: env.BASE_URL || 'http://example.net',
     secret: env.SECRET,
     logging: {
@@ -59,6 +59,9 @@ function buildConfiguration() {
     pass: {
       passTypeIdentifier: env.PASS_TYPE_IDENTIFIER,
       teamIdentifier: env.PASS_TEAM_IDENTIFIER,
+    },
+    browser: {
+      browserWSEndpoint: env.BROWSER_WS_ENDPOINT,
     },
   };
   if (config.environment === 'test') {

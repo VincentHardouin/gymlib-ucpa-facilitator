@@ -1,0 +1,8 @@
+sample.env
+.env
+README.md
+eslint.config.js
+.github
+docs
+node_modules
+tests

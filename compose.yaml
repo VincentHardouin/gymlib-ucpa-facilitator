@@ -9,3 +9,9 @@ services:
       POSTGRES_DB: ucpa_facilitator
     env_file:
       - .env
+
+  chrome:
+    image: ghcr.io/browserless/chromium
+    container_name: chrome
+    ports:
+      - '3000:3000'

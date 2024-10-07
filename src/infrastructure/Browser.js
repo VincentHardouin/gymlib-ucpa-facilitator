@@ -1,5 +1,6 @@
 import { env } from 'node:process';
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
+import { config } from '../../config.js';
 
 export class Browser {
   constructor(browser, page) {
@@ -11,7 +12,9 @@ export class Browser {
     if (env.NODE_ENV === 'test') {
       return;
     }
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.connect({
+      browserWSEndpoint: config.browser.browserWSEndpoint,
+    });
     const page = await browser.newPage();
     const customUA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:127.0) Gecko/20100101 Firefox/127.0';
     await page.setUserAgent(customUA);
