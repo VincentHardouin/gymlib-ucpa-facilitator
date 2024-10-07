@@ -4,7 +4,7 @@ import { config } from './config.js';
 import { createServer } from './server.js';
 import { passController, reservationController } from './src/application/index.js';
 import { authService } from './src/infrastructure/AuthService.js';
-import { logger } from './src/infrastructure/logger.js';
+import { logger } from './src/infrastructure/Logger.js';
 
 const parisTimezone = 'Europe/Paris';
 

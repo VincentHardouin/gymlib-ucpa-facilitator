@@ -1,5 +1,4 @@
 import { env } from 'node:process';
-import logger from 'imapflow/lib/logger.js';
 import 'dotenv/config';
 
 function isFeatureEnabled(environmentVariable) {
@@ -93,7 +92,7 @@ function verifyConfig(config) {
         }
 
         else if (value === null || value === undefined) {
-          logger.error(`Key "${currentPath}" does not have a valid value.`);
+          console.error(`Key "${currentPath}" does not have a valid value.`);
           allKeysHaveValues = false;
         }
       }
