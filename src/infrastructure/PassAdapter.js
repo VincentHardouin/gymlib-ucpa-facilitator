@@ -27,9 +27,15 @@ class PassAdapter {
         passTypeIdentifier,
         teamIdentifier: this.config.teamIdentifier,
         logoText: title,
-        relevantDate: start,
         webServiceURL: this.baseURL,
         authenticationToken: token,
+        maxDistance: 100,
+        relevantDate: start,
+        semantics: {
+          eventStartDate: start.toISOString(),
+          eventEndDate: new Date(new Date(start).setHours(start.getHours() + 1)).toISOString(),
+          duration: 3600,
+        },
       },
     );
 
