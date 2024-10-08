@@ -14,7 +14,7 @@ export class CreatePassUseCase {
       const reservation = await this.reservationRepository.getNextEvent();
       const serialNumber = randomUUID();
       const passTypeIdentifier = this.config.passTypeIdentifier;
-      await this.passRepository.save({ passTypeIdentifier, serialNumber });
+      await this.passRepository.save({ passTypeIdentifier, serialNumber, nextEvent: reservation.code });
       return new ReservationPass({ ...reservation, passTypeIdentifier, serialNumber });
     }
     catch (e) {

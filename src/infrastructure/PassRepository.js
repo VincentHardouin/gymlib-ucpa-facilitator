@@ -16,8 +16,8 @@ class PassRepository {
     return pass;
   }
 
-  async save({ passTypeIdentifier, serialNumber }) {
-    await this.#knex('passes').insert({ passTypeIdentifier, serialNumber });
+  async save({ passTypeIdentifier, serialNumber, nextEvent }) {
+    await this.#knex('passes').insert({ passTypeIdentifier, serialNumber, nextEvent });
   }
 
   async findUpdated({ deviceLibraryIdentifier, passTypeIdentifier, passesUpdatedSince }) {
