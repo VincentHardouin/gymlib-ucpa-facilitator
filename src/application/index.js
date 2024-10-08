@@ -25,6 +25,7 @@ const passController = new PassController({
   getUpdatedPassUseCase,
   createPassUseCase,
   passAdapter,
+  logger,
 });
 
 const reservationController = new ReservationController({
