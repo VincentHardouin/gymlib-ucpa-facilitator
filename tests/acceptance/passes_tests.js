@@ -229,11 +229,13 @@ describe('Acceptance | Endpoints | Passes', function () {
       });
 
       it('should return pass', async function () {
+        const token = await generateAuthorizationToken();
         await knex('reservations').insert({ code: '12345', start_at: new Date('2024-01-10'), court: '10', activity: 'Badminton', status: 'reserved', updated_at: new Date('2024-01-02') });
 
         const response = await server.inject({
-          method: 'GET',
+          method: 'POST',
           url: '/pass',
+          headers: { authorization: token },
         });
 
         expect(response.statusCode).to.equal(201);
@@ -243,9 +245,12 @@ describe('Acceptance | Endpoints | Passes', function () {
 
     context('when next event does not exist', function () {
       it('should return 503', async function () {
+        const token = await generateAuthorizationToken();
+
         const response = await server.inject({
-          method: 'GET',
+          method: 'POST',
           url: '/pass',
+          headers: { authorization: token },
         });
 
         expect(response.statusCode).to.equal(503);

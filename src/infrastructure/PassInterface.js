@@ -65,9 +65,10 @@ export class PassInterface {
         },
       },
       {
-        method: 'GET',
+        method: 'POST',
         path: '/pass',
         options: {
+          pre: [{ method: (request, h) => { return this.authService.validateFromPass(request, h); } }],
           handler: async (request, h) => {
             return this.passController.create(request, h);
           },
