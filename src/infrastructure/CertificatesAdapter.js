@@ -2,14 +2,14 @@ import { resolve } from 'node:path';
 import { config } from '../../config.js';
 import { fileAdapter } from './FileAdapter.js';
 
-class PassCertificatesAdapter {
+class CertificatesAdapter {
   constructor({ signerKeyPassphrase, fileAdapter }) {
     this.fileAdapter = fileAdapter;
     this.signerKeyPassphrase = signerKeyPassphrase;
     this.cache = null;
   }
 
-  async get() {
+  async getForPass() {
     if (this.cache !== null) {
       return this.cache;
     }
@@ -29,7 +29,7 @@ class PassCertificatesAdapter {
   }
 }
 
-export const passCertificatesAdapter = new PassCertificatesAdapter({
+export const certificatesAdapter = new CertificatesAdapter({
   signerKeyPassphrase: config.certificates.signerKeyPassphrase,
   fileAdapter,
 });

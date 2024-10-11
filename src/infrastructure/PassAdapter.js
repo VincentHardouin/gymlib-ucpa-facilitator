@@ -1,13 +1,13 @@
 import passkit from 'passkit-generator';
 import { config } from '../../config.js';
 import { jsonWebTokenService } from './JsonWebTokenService.js';
-import { passCertificatesAdapter } from './PassCertificatesAdapter.js';
+import { certificatesAdapter } from './CertificatesAdapter.js';
 
 const PKPass = passkit.PKPass;
 
 class PassAdapter {
-  constructor({ passCertificatesAdapter, PKPass, baseURL, jsonWebTokenService, config }) {
-    this.passCertificatesAdapter = passCertificatesAdapter;
+  constructor({ certificatesAdapter, PKPass, baseURL, jsonWebTokenService, config }) {
+    this.certificatesAdapter = certificatesAdapter;
     this.PKPass = PKPass;
     this.baseURL = baseURL;
     this.jsonWebTokenService = jsonWebTokenService;
@@ -15,7 +15,7 @@ class PassAdapter {
   }
 
   async get({ title, start, court, code, serialNumber, passTypeIdentifier }) {
-    this.certificates = await this.passCertificatesAdapter.get();
+    this.certificates = await this.certificatesAdapter.getForPass();
     const token = await this.jsonWebTokenService.generateToken({});
     this.pass = await this.PKPass.from(
       {
@@ -76,4 +76,4 @@ class PassAdapter {
   }
 }
 
-export const passAdapter = new PassAdapter({ passCertificatesAdapter, PKPass, baseURL: config.baseURL, jsonWebTokenService, config: config.apple });
+export const passAdapter = new PassAdapter({ certificatesAdapter, PKPass, baseURL: config.baseURL, jsonWebTokenService, config: config.apple });
