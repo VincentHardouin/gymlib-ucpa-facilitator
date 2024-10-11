@@ -1,5 +1,5 @@
 import * as fs from 'node:fs/promises';
-import { logger } from './Logger.js';
+import { logger } from '../Logger.js';
 
 class FileAdapter {
   constructor({ fs, logger }) {

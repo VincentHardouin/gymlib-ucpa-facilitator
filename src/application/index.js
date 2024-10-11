@@ -13,8 +13,8 @@ import {
   submitFormUseCase,
   unregisterPassUpdateUseCase,
 } from '../domain/usecases/index.js';
+import { passAdapter } from '../infrastructure/adapters/PassAdapter.js';
 import { logger } from '../infrastructure/Logger.js';
-import { passAdapter } from '../infrastructure/PassAdapter.js';
 import { PassController } from './PassController.js';
 import { ReservationController } from './ReservationController.js';
 

@@ -1,6 +1,6 @@
 import passkit from 'passkit-generator';
-import { config } from '../../config.js';
-import { jsonWebTokenService } from './JsonWebTokenService.js';
+import { config } from '../../../config.js';
+import { jsonWebTokenService } from '../JsonWebTokenService.js';
 import { certificatesAdapter } from './CertificatesAdapter.js';
 
 const PKPass = passkit.PKPass;

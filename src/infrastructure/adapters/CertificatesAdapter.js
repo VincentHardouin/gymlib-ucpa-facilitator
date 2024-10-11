@@ -1,5 +1,5 @@
 import { resolve } from 'node:path';
-import { config } from '../../config.js';
+import { config } from '../../../config.js';
 import { fileAdapter } from './FileAdapter.js';
 
 class CertificatesAdapter {
@@ -10,13 +10,13 @@ class CertificatesAdapter {
   }
 
   async getForPass() {
-    if (this.cache !== null && this.cache.pass !== null) {
+    if (this.cache.pass !== undefined) {
       return this.cache;
     }
 
-    const signerCert = await this.fileAdapter.readFile(resolve(import.meta.dirname, '../../certs/signerCert.pem'));
-    const signerKey = await this.fileAdapter.readFile(resolve(import.meta.dirname, '../../certs/signerKey.pem'));
-    const wwdr = await this.fileAdapter.readFile(resolve(import.meta.dirname, '../../certs/wwdr.pem'));
+    const signerCert = await this.fileAdapter.readFile(resolve(import.meta.dirname, '../../../certs/signerCert.pem'));
+    const signerKey = await this.fileAdapter.readFile(resolve(import.meta.dirname, '../../../certs/signerKey.pem'));
+    const wwdr = await this.fileAdapter.readFile(resolve(import.meta.dirname, '../../../certs/wwdr.pem'));
 
     this.cache.pass = {
       signerCert,
@@ -29,12 +29,11 @@ class CertificatesAdapter {
   }
 
   async getForAppleToken() {
-    if (this.cache !== null && this.cache.appleTokenCertificate !== null) {
+    if (this.cache.appleTokenCertificate !== undefined) {
       return this.cache.appleTokenCertificate;
     }
 
-    const appleTokenCertificate = await this.fileAdapter.readFile(resolve(import.meta.dirname, '../../certs/AuthKey_N7J7Y44RJQ.p8'));
-
+    const appleTokenCertificate = await this.fileAdapter.readFile(resolve(import.meta.dirname, '../../../certs/AuthKey_N7J7Y44RJQ.p8'));
     this.cache.appleTokenCertificate = appleTokenCertificate;
     return this.cache.appleTokenCertificate;
   }

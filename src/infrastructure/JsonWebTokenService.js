@@ -1,6 +1,6 @@
 import jsonwebtoken from 'jsonwebtoken';
 import { config } from '../../config.js';
-import { certificatesAdapter } from './CertificatesAdapter.js';
+import { certificatesAdapter } from './adapters/CertificatesAdapter.js';
 
 class JsonWebTokenService {
   constructor({ jsonwebtoken, certificatesAdapter, config }) {
