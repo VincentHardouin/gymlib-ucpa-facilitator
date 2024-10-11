@@ -1,8 +1,8 @@
 const CONTREMARQUE_FORM_URL = 'https://sphinx.ucpa.com/surveyserver/s/ucpa/CONTREMARQUE/Gymlib.htm';
 
 export class SubmitFormUseCase {
-  constructor({ browser, reservationRepository, formInfo, dryRun }) {
-    this.browser = browser;
+  constructor({ browserAdapter, reservationRepository, formInfo, dryRun }) {
+    this.browserAdapter = browserAdapter;
     this.reservationRepository = reservationRepository;
     this.formInfo = formInfo;
     this.dryRun = dryRun;
@@ -10,7 +10,7 @@ export class SubmitFormUseCase {
 
   async execute(reservation) {
     const { club, lastName, firstName, email, tel } = this.formInfo;
-    const page = this.browser.page;
+    const page = this.browserAdapter.page;
     await page.goto(CONTREMARQUE_FORM_URL);
     await page.select('[id="2041925461"]', club);
     const radioSexe = await page.$('[id="971686063_1"]');
@@ -26,7 +26,7 @@ export class SubmitFormUseCase {
     if (!this.dryRun) {
       await page.click('[type="submit"][data-action="save"]');
     }
-    await this.browser.browser.close();
+    await this.browserAdapter.browserAdapter.close();
 
     reservation.markAsSubmitted();
     await this.reservationRepository.save(reservation);

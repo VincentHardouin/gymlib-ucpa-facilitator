@@ -1,6 +1,6 @@
 import { config } from '../../../config.js';
+import { BrowserAdapter } from '../../infrastructure/adapters/BrowserAdapter.js';
 import { MailAdapter } from '../../infrastructure/adapters/MailAdapter.js';
-import { Browser } from '../../infrastructure/Browser.js';
 import { NotificationClient } from '../../infrastructure/NotificationClient.js';
 import { CalendarRepository } from '../../infrastructure/repositories/CalendarRepository.js';
 import { deviceRepository } from '../../infrastructure/repositories/DeviceRepository.js';
@@ -55,9 +55,9 @@ const getActiveReservationsUseCase = new GetActiveReservationsUseCase({
   reservationRepository,
 });
 
-const browser = await Browser.create();
+const browserAdapter = await BrowserAdapter.create();
 const submitFormUseCase = new SubmitFormUseCase({
-  browser,
+  browserAdapter,
   reservationRepository,
   formInfo: config.ucpa.formInfo,
   dryRun: !config.ucpa.formSubmit,
