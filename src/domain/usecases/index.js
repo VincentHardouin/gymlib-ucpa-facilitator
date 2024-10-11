@@ -1,7 +1,7 @@
 import { config } from '../../../config.js';
 import { BrowserAdapter } from '../../infrastructure/adapters/BrowserAdapter.js';
 import { MailAdapter } from '../../infrastructure/adapters/MailAdapter.js';
-import { NotificationAdapter } from '../../infrastructure/adapters/NotificationAdapter.js';
+import { ntfyAdapter } from '../../infrastructure/adapters/NtfyAdapter.js';
 import { CalendarRepository } from '../../infrastructure/repositories/CalendarRepository.js';
 import { deviceRepository } from '../../infrastructure/repositories/DeviceRepository.js';
 import { passRepository } from '../../infrastructure/repositories/PassRepository.js';
@@ -65,13 +65,12 @@ const submitFormUseCase = new SubmitFormUseCase({
 
 const ucpaMailAdapter = new MailAdapter(config.ucpa.imapConfig);
 const timeSlotDatasource = new TimeSlotDatasource();
-const notificationAdapter = new NotificationAdapter(config.notification);
 const notifyUseCase = new NotifyUseCase({
   mailAdapter: ucpaMailAdapter,
   searchQuery: config.ucpa.searchQuery,
   reservationRepository,
   timeSlotDatasource,
-  notificationAdapter,
+  notificationAdapter: ntfyAdapter,
   timeSlotsPreferences: config.timeSlotsPreferences,
   areaId: config.ucpa.areaId,
 });

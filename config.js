@@ -44,9 +44,12 @@ function buildConfiguration() {
       formSubmit: isFeatureEnabled(env.FORM_SUBMIT_ENABLED),
       areaId: env.UCPA_AREA_ID,
     },
-    notification: {
-      url: env.NOTIFICATION_URL,
-      token: env.NOTIFICATION_TOKEN,
+    notifications: {
+      ntfy: {
+        url: env.NOTIFICATIONS_NTFY_URL,
+        token: env.NOTIFICATIONS_NTFY_TOKEN,
+        topic: env.NOTIFICATIONS_NTFY_TOPIC,
+      },
     },
     calendar: {
       name: env.CALENDAR_NAME,
