@@ -76,4 +76,4 @@ class PassAdapter {
   }
 }
 
-export const passAdapter = new PassAdapter({ passCertificatesAdapter, PKPass, baseURL: config.baseURL, jsonWebTokenService, config: config.pass });
+export const passAdapter = new PassAdapter({ passCertificatesAdapter, PKPass, baseURL: config.baseURL, jsonWebTokenService, config: config.apple });

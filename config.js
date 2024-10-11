@@ -56,9 +56,9 @@ function buildConfiguration() {
     certificates: {
       signerKeyPassphrase: env.CERTIFICATES_SIGNER_KEY_PASSPHRASE,
     },
-    pass: {
-      passTypeIdentifier: env.PASS_TYPE_IDENTIFIER,
-      teamIdentifier: env.PASS_TEAM_IDENTIFIER,
+    apple: {
+      teamIdentifier: env.APPLE_TEAM_IDENTIFIER,
+      passTypeIdentifier: env.APPLE_PASS_TYPE_IDENTIFIER,
     },
     browser: {
       browserWSEndpoint: env.BROWSER_WS_ENDPOINT,
