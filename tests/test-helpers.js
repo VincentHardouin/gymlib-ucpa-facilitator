@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import nock from 'nock';
 import * as sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import { jsonWebTokenService } from '../src/infrastructure/JsonWebTokenService.js';
+import { jsonWebTokenAdapter } from '../src/infrastructure/adapters/JsonWebTokenAdapter.js';
 
 const expect = chai.expect;
 chai.use(sinonChai);
@@ -19,7 +19,7 @@ afterEach(function () {
 });
 
 async function generateAuthorizationToken() {
-  const token = await jsonWebTokenService.generateToken({ serialNumber: '123456' });
+  const token = await jsonWebTokenAdapter.generateToken({ serialNumber: '123456' });
   return `ApplePass ${token}`;
 }
 

@@ -73,7 +73,7 @@ PASS_TEAM_IDENTIFIER=
 Pour le pass, il faut d'abord en créer un. Pour ça, nous devons récupérer un token :
 
 ```shell
-ACCESS_TOKEN=$(node --input-type=module --eval "console.log(await (await import('./src/infrastructure/jsonWebTokenService.js')).jsonWebTokenService.generateToken({}));")
+ACCESS_TOKEN=$(node --input-type=module --eval "console.log(await (await import('./src/infrastructure/jsonWebTokenAdapter.js')).jsonWebTokenAdapter.generateToken({}));")
 ```
 
 Après avoir obtenu notre token, nous pouvons faire un curl pour créer le pass :

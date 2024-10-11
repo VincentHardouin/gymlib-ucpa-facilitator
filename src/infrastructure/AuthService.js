@@ -1,14 +1,14 @@
 import * as boom from '@hapi/boom';
-import { jsonWebTokenService } from './JsonWebTokenService.js';
+import { jsonWebTokenAdapter } from './adapters/JsonWebTokenAdapter.js';
 
 class AuthService {
-  constructor(jsonWebTokenService) {
-    this.jsonWebTokenService = jsonWebTokenService;
+  constructor({ jsonWebTokenAdapter }) {
+    this.jsonWebTokenAdapter = jsonWebTokenAdapter;
   }
 
   validateFromPass(request, h) {
-    const accessTokenFromHeader = this.jsonWebTokenService.extractTokenFromHeader(request);
-    const accessTokenFromQuery = this.jsonWebTokenService.extractTokenFromQuery(request);
+    const accessTokenFromHeader = this.jsonWebTokenAdapter.extractTokenFromHeader(request);
+    const accessTokenFromQuery = this.jsonWebTokenAdapter.extractTokenFromQuery(request);
 
     const accessToken = accessTokenFromHeader !== '' ? accessTokenFromHeader : accessTokenFromQuery;
 
@@ -16,7 +16,7 @@ class AuthService {
       return boom.unauthorized('Invalid token');
     }
 
-    const decodedAccessToken = this.jsonWebTokenService.getDecodedToken(accessToken);
+    const decodedAccessToken = this.jsonWebTokenAdapter.getDecodedToken(accessToken);
     if (!decodedAccessToken) {
       return boom.unauthorized('Invalid token');
     }
@@ -25,4 +25,4 @@ class AuthService {
   }
 }
 
-export const authService = new AuthService(jsonWebTokenService);
+export const authService = new AuthService({ jsonWebTokenAdapter });

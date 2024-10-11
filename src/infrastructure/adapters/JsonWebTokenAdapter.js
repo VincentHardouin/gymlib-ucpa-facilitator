@@ -1,8 +1,8 @@
 import jsonwebtoken from 'jsonwebtoken';
-import { config } from '../../config.js';
-import { certificatesAdapter } from './adapters/CertificatesAdapter.js';
+import { config } from '../../../config.js';
+import { certificatesAdapter } from './CertificatesAdapter.js';
 
-class JsonWebTokenService {
+class JsonWebTokenAdapter {
   constructor({ jsonwebtoken, certificatesAdapter, config }) {
     this.jsonwebtoken = jsonwebtoken;
     this.certificatesAdapter = certificatesAdapter;
@@ -50,7 +50,7 @@ class JsonWebTokenService {
   }
 }
 
-export const jsonWebTokenService = new JsonWebTokenService({
+export const jsonWebTokenAdapter = new JsonWebTokenAdapter({
   jsonwebtoken,
   certificatesAdapter,
   config: {
