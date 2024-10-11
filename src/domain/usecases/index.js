@@ -42,7 +42,7 @@ const getUpdatedPassUseCase = new GetUpdatedPassUseCase({
 const createPassUseCase = new CreatePassUseCase({
   passRepository,
   reservationRepository,
-  config: config.pass,
+  config: config.apple,
 });
 
 const gymlibMailAdapter = new MailAdapter(config.gymlib.imapConfig);
