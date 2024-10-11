@@ -6,11 +6,11 @@ class CertificatesAdapter {
   constructor({ signerKeyPassphrase, fileAdapter }) {
     this.fileAdapter = fileAdapter;
     this.signerKeyPassphrase = signerKeyPassphrase;
-    this.cache = null;
+    this.cache = {};
   }
 
   async getForPass() {
-    if (this.cache !== null) {
+    if (this.cache !== null && this.cache.pass !== null) {
       return this.cache;
     }
 
@@ -18,14 +18,25 @@ class CertificatesAdapter {
     const signerKey = await this.fileAdapter.readFile(resolve(import.meta.dirname, '../../certs/signerKey.pem'));
     const wwdr = await this.fileAdapter.readFile(resolve(import.meta.dirname, '../../certs/wwdr.pem'));
 
-    this.cache = {
+    this.cache.pass = {
       signerCert,
       signerKey,
       wwdr,
       signerKeyPassphrase: this.signerKeyPassphrase,
     };
 
-    return this.cache;
+    return this.cache.pass;
+  }
+
+  async getForAppleToken() {
+    if (this.cache !== null && this.cache.appleTokenCertificate !== null) {
+      return this.cache.appleTokenCertificate;
+    }
+
+    const appleTokenCertificate = await this.fileAdapter.readFile(resolve(import.meta.dirname, '../../certs/AuthKey_N7J7Y44RJQ.p8'));
+
+    this.cache.appleTokenCertificate = appleTokenCertificate;
+    return this.cache.appleTokenCertificate;
   }
 }
 

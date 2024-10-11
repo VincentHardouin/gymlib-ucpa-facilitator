@@ -1,14 +1,21 @@
 import jsonwebtoken from 'jsonwebtoken';
 import { config } from '../../config.js';
+import { certificatesAdapter } from './CertificatesAdapter.js';
 
 class JsonWebTokenService {
-  constructor(jsonwebtoken, config) {
+  constructor({ jsonwebtoken, certificatesAdapter, config }) {
     this.jsonwebtoken = jsonwebtoken;
+    this.certificatesAdapter = certificatesAdapter;
     this.config = config;
   }
 
   async generateToken(passInfo) {
     return this.jsonwebtoken.sign(passInfo, config.secret);
+  }
+
+  async generateAppleToken() {
+    const appleTokenCert = await this.certificatesAdapter.getForAppleToken();
+    return this.jsonwebtoken.sign({}, appleTokenCert, { algorithm: 'ES256', issuer: config.apple.teamIdentifier, keyid: 'N7J7Y44RJQ' });
   }
 
   extractTokenFromHeader(request) {
@@ -43,4 +50,11 @@ class JsonWebTokenService {
   }
 }
 
-export const jsonWebTokenService = new JsonWebTokenService(jsonwebtoken, config.authentication);
+export const jsonWebTokenService = new JsonWebTokenService({
+  jsonwebtoken,
+  certificatesAdapter,
+  config: {
+    authentification: config.authentication,
+    apple: config.apple,
+  },
+});
