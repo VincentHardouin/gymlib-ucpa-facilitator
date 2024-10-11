@@ -1,6 +1,6 @@
-import { httpAdapter } from './adapters/HttpAdapter.js';
+import { httpAdapter } from './HttpAdapter.js';
 
-export class NotificationClient {
+export class NotificationAdapter {
   constructor({ url, token }) {
     this.url = url;
     this.token = token;

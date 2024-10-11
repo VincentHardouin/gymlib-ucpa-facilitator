@@ -2,12 +2,12 @@ const VALIDATION_SUBJECT = 'UCPA Contremarque';
 const VALIDATION_TEXT = 'Tu peux dès à présent retrouver ton e-billet sur le site internet de ton centre';
 
 export class NotifyUseCase {
-  constructor({ mailAdapter, searchQuery, reservationRepository, timeSlotDatasource, notificationClient, timeSlotsPreferences, areaId }) {
+  constructor({ mailAdapter, searchQuery, reservationRepository, timeSlotDatasource, notificationAdapter, timeSlotsPreferences, areaId }) {
     this.mailAdapter = mailAdapter;
     this.searchQuery = searchQuery;
     this.reservationRepository = reservationRepository;
     this.timeSlotDatasource = timeSlotDatasource;
-    this.notificationClient = notificationClient;
+    this.notificationAdapter = notificationAdapter;
     this.timeSlotsPreferences = timeSlotsPreferences;
     this.areaId = areaId;
   }
@@ -23,7 +23,7 @@ export class NotifyUseCase {
 
     const timeSlots = await this.timeSlotDatasource.getAllAvailable(this.areaId);
     const convenientTimeSlots = this._getConvientTimeSlots(timeSlots, this.timeSlotsPreferences);
-    await this.notificationClient.notify(convenientTimeSlots);
+    await this.notificationAdapter.notify(convenientTimeSlots);
     reservation.markAsNotified();
     await this.reservationRepository.save(reservation);
   }
