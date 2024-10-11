@@ -1,4 +1,4 @@
-import { httpClient } from './HttpClient.js';
+import { httpAdapter } from './adapters/HttpAdapter.js';
 
 export class NotificationClient {
   constructor({ url, token }) {
@@ -7,6 +7,6 @@ export class NotificationClient {
   }
 
   async notify(text) {
-    await httpClient.post(this.url, { Authorization: this.token }, text);
+    await httpAdapter.post(this.url, { Authorization: this.token }, text);
   }
 }

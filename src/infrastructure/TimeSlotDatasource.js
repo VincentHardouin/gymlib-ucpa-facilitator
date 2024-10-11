@@ -1,5 +1,5 @@
 import { TimeSlot } from '../domain/TimeSlot.js';
-import { httpClient } from './HttpClient.js';
+import { httpAdapter } from './adapters/HttpAdapter.js';
 
 const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:127.0) Gecko/20100101 Firefox/127.0';
 
@@ -10,7 +10,7 @@ export class TimeSlotDatasource {
       getDatePlusDays(7),
       getDatePlusDays(14),
     ].map(async (date) => {
-      return httpClient.get(`https://www.ucpa.com/sport-station/api/areas-offers/weekly/alpha_hp?=&reservationPeriod=1&espace=${areaId}&time=${date}&__amp_source_origin=https://www.ucpa.com`, { 'User-agent': USER_AGENT });
+      return httpAdapter.get(`https://www.ucpa.com/sport-station/api/areas-offers/weekly/alpha_hp?=&reservationPeriod=1&espace=${areaId}&time=${date}&__amp_source_origin=https://www.ucpa.com`, { 'User-agent': USER_AGENT });
     });
 
     let availableTimeSlots = [];

@@ -1,4 +1,4 @@
-class HttpClient {
+class HttpAdapter {
   async get(url, headers) {
     const response = await fetch(url, { headers });
     return response.json();
@@ -9,4 +9,4 @@ class HttpClient {
   }
 }
 
-export const httpClient = new HttpClient();
+export const httpAdapter = new HttpAdapter();
