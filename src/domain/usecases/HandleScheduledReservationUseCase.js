@@ -1,5 +1,12 @@
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone.js';
+import utc from 'dayjs/plugin/utc.js';
 import { NotFoundError } from '../Errors.js';
+
 import { Reservation } from '../Reservation.js';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const RESERVATION_ACCEPTED_MESSAGE_CONTENT = 'MERCI POUR VOTRE RESERVATION !';
 const EXTRACT_INFORMATION_REGEXP = /Terrain (?<court>\d+) (?<activity>\w+)\s\w+ le (?<date>\d{2}-\d{2}-\d{4}) à (?<hour>\d{2}:\d{2})/;
@@ -45,7 +52,7 @@ export class HandleScheduledReservationUseCase {
       code: matchCode.groups.code,
       court: match.groups.court,
       activity: match.groups.activity,
-      start: new Date(`${formattedDate}T${match.groups.hour}:00`),
+      start: dayjs.tz(`${formattedDate}T${match.groups.hour}:00`, 'Europe/Paris'),
     };
   }
 
