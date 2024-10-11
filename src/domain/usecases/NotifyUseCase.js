@@ -2,8 +2,8 @@ const VALIDATION_SUBJECT = 'UCPA Contremarque';
 const VALIDATION_TEXT = 'Tu peux dès à présent retrouver ton e-billet sur le site internet de ton centre';
 
 export class NotifyUseCase {
-  constructor({ imapClient, searchQuery, reservationRepository, timeSlotDatasource, notificationClient, timeSlotsPreferences, areaId }) {
-    this.imapClient = imapClient;
+  constructor({ mailAdapter, searchQuery, reservationRepository, timeSlotDatasource, notificationClient, timeSlotsPreferences, areaId }) {
+    this.mailAdapter = mailAdapter;
     this.searchQuery = searchQuery;
     this.reservationRepository = reservationRepository;
     this.timeSlotDatasource = timeSlotDatasource;
@@ -14,7 +14,7 @@ export class NotifyUseCase {
 
   async execute(reservation) {
     if (reservation.isRequiresValidation) {
-      await this._verifyValidation(reservation, this.reservationRepository, this.imapClient);
+      await this._verifyValidation(reservation, this.reservationRepository, this.mailAdapter);
     }
 
     if (!reservation.isValidated) {
@@ -28,12 +28,12 @@ export class NotifyUseCase {
     await this.reservationRepository.save(reservation);
   }
 
-  async _verifyValidation(reservation, reservationRepositories, imapClient) {
+  async _verifyValidation(reservation, reservationRepositories, mailAdapter) {
     const formSubmittedAt = reservation.updatedAt;
-    const messages = await imapClient.fetch(this.searchQuery);
+    const messages = await mailAdapter.fetch(this.searchQuery);
     for (const message of messages) {
       if (message.title === VALIDATION_SUBJECT && formSubmittedAt < message.date && message.html.includes(VALIDATION_TEXT)) {
-        await this.imapClient.deleteMail(message.uid);
+        await this.mailAdapter.deleteMail(message.uid);
         reservation.markAsValidated();
         await reservationRepositories.save(reservation);
         return;

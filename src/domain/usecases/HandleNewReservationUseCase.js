@@ -5,13 +5,13 @@ import { Reservation } from '../Reservation.js';
 const CODE_REGEXP = /Voici votre code de réservation UCPA : (?<code>\d+)/;
 
 export class HandleNewReservationUseCase {
-  constructor({ imapClient, searchQuery }) {
-    this.imapClient = imapClient;
+  constructor({ mailAdapter, searchQuery }) {
+    this.mailAdapter = mailAdapter;
     this.searchQuery = searchQuery;
   }
 
   async execute() {
-    const messages = await this.imapClient.fetch(this.searchQuery);
+    const messages = await this.mailAdapter.fetch(this.searchQuery);
     for (const message of messages) {
       const code = this._getUCPAReservationCode(message);
       if (!code) {

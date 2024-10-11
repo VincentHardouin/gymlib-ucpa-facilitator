@@ -6,14 +6,14 @@ const EXTRACT_INFORMATION_REGEXP = /Terrain (?<court>\d+) (?<activity>\w+)\s\w+ 
 const EXTRACT_CODE_REGEXP = /<p>(?<code>\d+)<\/p>/;
 
 export class HandleScheduledReservationUseCase {
-  constructor({ imapClient, searchQuery, reservationRepository }) {
-    this.imapClient = imapClient;
+  constructor({ mailAdapter, searchQuery, reservationRepository }) {
+    this.mailAdapter = mailAdapter;
     this.searchQuery = searchQuery;
     this.reservationRepository = reservationRepository;
   }
 
   async execute() {
-    const messages = await this.imapClient.fetch(this.searchQuery);
+    const messages = await this.mailAdapter.fetch(this.searchQuery);
     for (const message of messages) {
       const isScheduledReservationMessage = message.html.includes(RESERVATION_ACCEPTED_MESSAGE_CONTENT);
       if (!isScheduledReservationMessage) {

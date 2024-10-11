@@ -1,8 +1,8 @@
 import { ImapFlow } from 'imapflow';
 import { simpleParser } from 'mailparser';
-import { logger } from './Logger.js';
+import { logger } from '../Logger.js';
 
-class ImapClient {
+class MailAdapter {
   #host;
   #port;
   #user;
@@ -72,4 +72,4 @@ class ImapClient {
   }
 }
 
-export { ImapClient };
+export { MailAdapter };

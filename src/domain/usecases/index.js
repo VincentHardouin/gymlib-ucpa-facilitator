@@ -1,9 +1,9 @@
 import { config } from '../../../config.js';
+import { MailAdapter } from '../../infrastructure/adapters/MailAdapter.js';
 import { Browser } from '../../infrastructure/Browser.js';
+import { NotificationClient } from '../../infrastructure/NotificationClient.js';
 import { CalendarRepository } from '../../infrastructure/repositories/CalendarRepository.js';
 import { deviceRepository } from '../../infrastructure/repositories/DeviceRepository.js';
-import { ImapClient } from '../../infrastructure/ImapClient.js';
-import { NotificationClient } from '../../infrastructure/NotificationClient.js';
 import { passRepository } from '../../infrastructure/repositories/PassRepository.js';
 import { registrationRepository } from '../../infrastructure/repositories/RegistrationRepository.js';
 import { reservationRepository } from '../../infrastructure/repositories/ReservationRepository.js';
@@ -45,9 +45,9 @@ const createPassUseCase = new CreatePassUseCase({
   config: config.pass,
 });
 
-const gymlibImapClient = new ImapClient(config.gymlib.imapConfig);
+const gymlibMailAdapter = new MailAdapter(config.gymlib.imapConfig);
 const handleNewReservationUseCase = new HandleNewReservationUseCase({
-  imapClient: gymlibImapClient,
+  mailAdapter: gymlibMailAdapter,
   searchQuery: config.gymlib.searchQuery,
 });
 
@@ -63,11 +63,11 @@ const submitFormUseCase = new SubmitFormUseCase({
   dryRun: !config.ucpa.formSubmit,
 });
 
-const ucpaImapClient = new ImapClient(config.ucpa.imapConfig);
+const ucpaMailAdapter = new MailAdapter(config.ucpa.imapConfig);
 const timeSlotDatasource = new TimeSlotDatasource();
 const notificationClient = new NotificationClient(config.notification);
 const notifyUseCase = new NotifyUseCase({
-  imapClient: ucpaImapClient,
+  mailAdapter: ucpaMailAdapter,
   searchQuery: config.ucpa.searchQuery,
   reservationRepository,
   timeSlotDatasource,
@@ -77,7 +77,7 @@ const notifyUseCase = new NotifyUseCase({
 });
 
 const handleScheduledReservationUseCase = new HandleScheduledReservationUseCase({
-  imapClient: ucpaImapClient,
+  mailAdapter: ucpaMailAdapter,
   searchQuery: config.ucpa.searchQuery,
   reservationRepository,
 });
