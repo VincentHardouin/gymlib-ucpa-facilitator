@@ -48,6 +48,10 @@ class JsonWebTokenAdapter {
       return null;
     }
   }
+
+  getDecodedTokenWithoutVerification(token) {
+    return this.jsonwebtoken.decode(token);
+  }
 }
 
 export const jsonWebTokenAdapter = new JsonWebTokenAdapter({

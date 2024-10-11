@@ -1,5 +1,13 @@
 import { env } from 'node:process';
+import { Agent, setGlobalDispatcher } from 'undici';
+
 import 'dotenv/config';
+
+// Need to activate HTTP/2 for APN Request with native fetch
+// cf: https://github.com/nodejs/undici/issues/2750
+setGlobalDispatcher(new Agent({
+  allowH2: true,
+}));
 
 function isFeatureEnabled(environmentVariable) {
   return environmentVariable === 'true';
@@ -49,6 +57,10 @@ function buildConfiguration() {
         url: env.NOTIFICATIONS_NTFY_URL,
         token: env.NOTIFICATIONS_NTFY_TOKEN,
         topic: env.NOTIFICATIONS_NTFY_TOPIC,
+      },
+      apple: {
+        url: env.NOTIFICATIONS_APPLE_URL,
+        topic: env.APPLE_PASS_TYPE_IDENTIFIER,
       },
     },
     calendar: {

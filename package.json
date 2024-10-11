@@ -37,7 +37,8 @@
     "passkit-generator": "^3.1.11",
     "pg": "^8.13.0",
     "pino": "^9.4.0",
-    "puppeteer-core": "^23.5.0"
+    "puppeteer-core": "^23.5.0",
+    "undici": "^6.20.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^3.6.1",
