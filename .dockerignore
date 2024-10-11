@@ -2,7 +2,11 @@ sample.env
 .env
 README.md
 eslint.config.js
+Dockerfile
+compose.yaml
+prod.compose.yaml
 .github
 docs
 node_modules
 tests
+certs
