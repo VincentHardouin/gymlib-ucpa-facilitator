@@ -1,5 +1,5 @@
 import { ReservationEvent } from '../../../src/domain/ReservationEvent.js';
-import { CalendarRepository } from '../../../src/infrastructure/CalendarRepository.js';
+import { CalendarRepository } from '../../../src/infrastructure/repositories/CalendarRepository.js';
 import { expect, sinon } from '../../test-helpers.js';
 
 describe('Integration | Infrastructure | CalendarRepository', function () {

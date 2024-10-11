@@ -1,5 +1,5 @@
-import { knex } from '../../db/knex-database-connection.js';
-import { NotFoundError } from '../domain/Errors.js';
+import { knex } from '../../../db/knex-database-connection.js';
+import { NotFoundError } from '../../domain/Errors.js';
 
 class RegistrationRepository {
   #knex;

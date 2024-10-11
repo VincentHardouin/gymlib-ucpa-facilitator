@@ -1,4 +1,4 @@
-import { reservationRepository } from '../../infrastructure/ReservationRepository.js';
+import { reservationRepository } from '../../infrastructure/repositories/ReservationRepository.js';
 import { NotFoundError } from '../Errors.js';
 import { Reservation } from '../Reservation.js';
 

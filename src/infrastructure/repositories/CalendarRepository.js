@@ -1,5 +1,5 @@
 import { ICalCalendar } from 'ical-generator';
-import { ReservationEvent } from '../domain/ReservationEvent.js';
+import { ReservationEvent } from '../../domain/ReservationEvent.js';
 
 export class CalendarRepository {
   constructor(name) {

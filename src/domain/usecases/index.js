@@ -1,12 +1,12 @@
 import { config } from '../../../config.js';
 import { Browser } from '../../infrastructure/Browser.js';
-import { CalendarRepository } from '../../infrastructure/CalendarRepository.js';
-import { deviceRepository } from '../../infrastructure/DeviceRepository.js';
+import { CalendarRepository } from '../../infrastructure/repositories/CalendarRepository.js';
+import { deviceRepository } from '../../infrastructure/repositories/DeviceRepository.js';
 import { ImapClient } from '../../infrastructure/ImapClient.js';
 import { NotificationClient } from '../../infrastructure/NotificationClient.js';
-import { passRepository } from '../../infrastructure/PassRepository.js';
-import { registrationRepository } from '../../infrastructure/RegistrationRepository.js';
-import { reservationRepository } from '../../infrastructure/ReservationRepository.js';
+import { passRepository } from '../../infrastructure/repositories/PassRepository.js';
+import { registrationRepository } from '../../infrastructure/repositories/RegistrationRepository.js';
+import { reservationRepository } from '../../infrastructure/repositories/ReservationRepository.js';
 import { TimeSlotDatasource } from '../../infrastructure/TimeSlotDatasource.js';
 import { CreateReservationEventsUseCase } from './CreateReservationEventsUseCase.js';
 import { GetActiveReservationsUseCase } from './GetActiveReservationsUseCase.js';

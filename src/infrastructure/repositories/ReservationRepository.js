@@ -1,6 +1,6 @@
-import { knex } from '../../db/knex-database-connection.js';
-import { NotFoundError } from '../domain/Errors.js';
-import { Reservation } from '../domain/Reservation.js';
+import { knex } from '../../../db/knex-database-connection.js';
+import { NotFoundError } from '../../domain/Errors.js';
+import { Reservation } from '../../domain/Reservation.js';
 
 class ReservationRepository {
   #knex;

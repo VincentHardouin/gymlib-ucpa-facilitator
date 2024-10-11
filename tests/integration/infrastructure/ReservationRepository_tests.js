@@ -1,6 +1,6 @@
 import { knex } from '../../../db/knex-database-connection.js';
 import { Reservation } from '../../../src/domain/Reservation.js';
-import { reservationRepository } from '../../../src/infrastructure/ReservationRepository.js';
+import { reservationRepository } from '../../../src/infrastructure/repositories/ReservationRepository.js';
 import { expect, sinon } from '../../test-helpers.js';
 
 describe('Integration | Infrastructure | ReservationRepository', function () {
