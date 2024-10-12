@@ -208,7 +208,7 @@ describe('Acceptance | Endpoints | Passes', function () {
       });
 
       expect(response.statusCode).to.equal(200);
-      const { 'content-type': contentType, 'last-updated': lastUpdated } = response.headers;
+      const { 'content-type': contentType, 'last-modified': lastUpdated } = response.headers;
       expect(contentType).to.equal('application/vnd.apple.pkpass');
       expect(lastUpdated).to.equal('Tue, 02, Jan, 2024 00:00:00 GMT');
     });

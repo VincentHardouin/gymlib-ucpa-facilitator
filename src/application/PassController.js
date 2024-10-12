@@ -61,7 +61,7 @@ export class PassController {
     const updatedReservationPass = await this.getUpdatedPassUseCase.execute({ passTypeIdentifier, serialNumber });
     const pass = await this.passAdapter.get(updatedReservationPass);
     const lastUpdated = dayjs(updatedReservationPass.updatedAt).utc().format('ddd, DD, MMM, YYYY HH:mm:ss');
-    return h.response(pass).code(200).type('application/vnd.apple.pkpass').header('Last-Updated', `${lastUpdated} GMT`);
+    return h.response(pass).code(200).type('application/vnd.apple.pkpass').header('Last-Modified', `${lastUpdated} GMT`);
   }
 
   async create(request, h) {
