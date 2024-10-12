@@ -47,29 +47,33 @@ class PassAdapter {
 
     this.pass.primaryFields.push(
       {
+        key: 'court',
+        label: 'court',
+        textAlignment: 'PKTextAlignmentLeft',
+        value: court,
+      },
+    );
+
+    this.pass.secondaryFields.push(
+      {
         key: 'event_date',
         label: 'date',
         value: start,
+        ignoresTimeZone: false,
         dateStyle: 'PKDateStyleMedium',
+        textAlignment: 'PKTextAlignmentLeft',
       },
       {
         key: 'event_time',
         label: 'time',
         textAlignment: 'PKTextAlignmentRight',
         timeStyle: 'PKDateStyleShort',
+        ignoresTimeZone: false,
         value: start,
       },
     );
 
-    this.pass.secondaryFields.push(
-      {
-        key: 'court',
-        label: 'court',
-        value: court,
-      },
-    );
-
-    this.pass.auxiliaryFields.push({
+    this.pass.backFields.push({
       key: 'code',
       label: 'code',
       value: code,
