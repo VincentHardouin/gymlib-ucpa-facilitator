@@ -1,11 +1,5 @@
 {
   "formatVersion": 1,
-  "locations": [
-    {
-      "longitude": 2.371645,
-      "latitude": 48.896370
-    }
-  ],
   "organizationName": "UCPA",
   "description": "UCPA Reservation ticket",
   "labelColor": "rgb(255, 255, 255)",

@@ -29,8 +29,14 @@ class PassAdapter {
         logoText: title,
         webServiceURL: this.baseURL,
         authenticationToken: token,
-        maxDistance: 100,
         relevantDate: start,
+        maxDistance: 50,
+        locations: [
+          {
+            latitude: 48.896370,
+            longitude: 2.371645,
+          },
+        ],
         semantics: {
           eventStartDate: start.toISOString(),
           eventEndDate: new Date(new Date(start).setHours(start.getHours() + 1)).toISOString(),
@@ -41,16 +47,17 @@ class PassAdapter {
 
     this.pass.primaryFields.push(
       {
-        key: 'date',
+        key: 'event_date',
         label: 'date',
         value: start,
         dateStyle: 'PKDateStyleMedium',
       },
       {
-        key: 'time',
+        key: 'event_time',
         label: 'time',
-        value: start,
+        textAlignment: 'PKTextAlignmentRight',
         timeStyle: 'PKDateStyleShort',
+        value: start,
       },
     );
 

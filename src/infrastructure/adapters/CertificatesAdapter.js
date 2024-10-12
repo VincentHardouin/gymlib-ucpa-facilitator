@@ -11,7 +11,7 @@ class CertificatesAdapter {
 
   async getForPass() {
     if (this.cache.pass !== undefined) {
-      return this.cache;
+      return this.cache.pass;
     }
 
     const signerCert = await this.fileAdapter.readFile(resolve(import.meta.dirname, '../../../certs/signerCert.pem'));
