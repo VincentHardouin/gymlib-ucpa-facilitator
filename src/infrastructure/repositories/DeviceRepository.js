@@ -23,6 +23,14 @@ class DeviceRepository {
   async delete({ deviceLibraryIdentifier }) {
     await this.#knex('devices').delete().where({ deviceLibraryIdentifier });
   }
+
+  async findByPasses(passes) {
+    return this.#knex('devices')
+      .distinct('devices.deviceLibraryIdentifier', 'pushToken')
+      .innerJoin('registrations', 'registrations.deviceLibraryIdentifier', 'devices.deviceLibraryIdentifier')
+      .whereIn('passTypeIdentifier', passes.map(({ passTypeIdentifier }) => passTypeIdentifier))
+      .whereIn('serialNumber', passes.map(({ serialNumber }) => serialNumber));
+  }
 }
 
 export const deviceRepository = new DeviceRepository(knex);

@@ -29,8 +29,12 @@ class PassRepository {
       .andWhere('updated_at', '>', passesUpdatedSince);
   }
 
-  async updateAll({ nextEvent }) {
-    await this.#knex('passes').update({ nextEvent, updated_at: new Date() });
+  async findAll() {
+    return this.#knex('passes').select('*');
+  }
+
+  async update({ passTypeIdentifier, serialNumber, nextEvent, updated_at }) {
+    return this.#knex('passes').update({ nextEvent, updated_at }).where({ passTypeIdentifier, serialNumber });
   }
 }
 

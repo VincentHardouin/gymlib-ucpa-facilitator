@@ -82,7 +82,7 @@ function buildConfiguration() {
   if (config.environment === 'test') {
     config.logging.enabled = false;
     config.secret = 'SECRET_FOR_TESTS';
-    config.pass.passTypeIdentifier = 'pass-identifier';
+    config.apple.passTypeIdentifier = 'pass-identifier';
   }
 
   if (!verifyConfig(config)) {

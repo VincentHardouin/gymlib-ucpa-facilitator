@@ -1,4 +1,5 @@
 import { config } from '../../../config.js';
+import { apnAdapter } from '../../infrastructure/adapters/ApnAdapter.js';
 import { BrowserAdapter } from '../../infrastructure/adapters/BrowserAdapter.js';
 import { MailAdapter } from '../../infrastructure/adapters/MailAdapter.js';
 import { ntfyAdapter } from '../../infrastructure/adapters/NtfyAdapter.js';
@@ -93,6 +94,8 @@ const getAllEventsUseCase = new GetAllEventsUseCase({ calendarRepository });
 const handleNextReservationUseCase = new HandleNextReservationUseCase({
   reservationRepository,
   passRepository,
+  deviceRepository,
+  notificationAdapter: apnAdapter,
 });
 
 export {
