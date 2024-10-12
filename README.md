@@ -62,12 +62,13 @@ Les prérequis sont :
 
 - Avoir un compte Apple Developer
 - Générer tous les certificats nécessaires aux pass et les avoir mis dans le dossier `certs`
-- Fournir les variables d'environnement nécessaire pour le pass
+- Fournir les variables d'environnement nécessaire pour le pass et sa mise à jour
 
 ```dotenv
 CERTIFICATES_SIGNER_KEY_PASSPHRASE=
-PASS_TYPE_IDENTIFIER=
-PASS_TEAM_IDENTIFIER=
+APPLE_PASS_TYPE_IDENTIFIER=
+APPLE_PASS_TEAM_IDENTIFIER=
+NOTIFICATIONS_APPLE_URL=
 ```
 
 Pour le pass, il faut d'abord en créer un. Pour ça, nous devons récupérer un token :
@@ -76,10 +77,10 @@ Pour le pass, il faut d'abord en créer un. Pour ça, nous devons récupérer un
 ACCESS_TOKEN=$(node --input-type=module --eval "console.log(await (await import('./src/infrastructure/jsonWebTokenAdapter.js')).jsonWebTokenAdapter.generateToken({}));")
 ```
 
-Après avoir obtenu notre token, nous pouvons faire un curl pour créer le pass :
+Après avoir obtenu notre token, nous pouvons faire un curl pour créer et obtenir le pass :
 
 ```shell
-curl -X POST -H "Authorization: Bearer $ACCESS_TOKEN" http://localhost:4000/pass
+curl -X POST -H "Authorization: Bearer $ACCESS_TOKEN" http://localhost:4000/pass -o "ucpa.pkpass"
 ```
 
 ## A venir :
