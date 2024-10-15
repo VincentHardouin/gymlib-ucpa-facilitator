@@ -26,7 +26,7 @@ export class SubmitFormUseCase {
     if (!this.dryRun) {
       await page.click('[type="submit"][data-action="save"]');
     }
-    await this.browserAdapter.browserAdapter.close();
+    await this.browserAdapter.browser.close();
 
     reservation.markAsSubmitted();
     await this.reservationRepository.save(reservation);
