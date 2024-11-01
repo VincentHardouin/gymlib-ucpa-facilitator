@@ -1,15 +1,17 @@
 import { config } from '../../../config.js';
+import { logger } from '../Logger.js';
 import { httpAdapter } from './HttpAdapter.js';
 import { jsonWebTokenAdapter } from './JsonWebTokenAdapter.js';
 import { NotificationAdapter } from './NotificationAdapter.js';
 
 export class ApnAdapter extends NotificationAdapter {
-  constructor({ url, topic, jsonWebTokenAdapter, httpAdapter }) {
+  constructor({ url, topic, jsonWebTokenAdapter, httpAdapter, logger }) {
     super();
     this.url = url;
     this.topic = topic;
     this.jsonWebTokenAdapter = jsonWebTokenAdapter;
     this.httpAdapter = httpAdapter;
+    this.logger = logger;
   }
 
   async notify(pushToken) {
@@ -19,7 +21,7 @@ export class ApnAdapter extends NotificationAdapter {
       'apns-topic': this.topic,
     };
     const url = `${this.url}/3/device/${pushToken}`;
-
+    this.logger.debug(`Notify device ${pushToken}`);
     return this.httpAdapter.post(url, headers, {});
   }
 
@@ -49,4 +51,5 @@ export const apnAdapter = new ApnAdapter({
   ...config.notifications.apple,
   jsonWebTokenAdapter,
   httpAdapter,
+  logger,
 });
