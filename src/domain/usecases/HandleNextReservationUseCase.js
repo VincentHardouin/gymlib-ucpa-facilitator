@@ -16,7 +16,7 @@ export class HandleNextReservationUseCase {
     const passes = await this.passRepository.findAll();
     const updatedPasses = [];
     for (const pass of passes) {
-      if (pass.nextEvent !== nextReservation.code) {
+      if (pass.nextEvent === nextReservation.code) {
         continue;
       }
 
