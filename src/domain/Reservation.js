@@ -10,12 +10,14 @@ const STATUSES = {
 };
 
 class Reservation {
-  constructor({ code, status, start, court, activity, updatedAt }) {
+  constructor({ id, code, status, start, court, activity, updatedAt, is_subscription }) {
+    this.id = id;
     this.code = code;
     this.status = status;
     this.start = start;
     this.court = court;
     this.activity = activity;
+    this.is_subscription = is_subscription;
     this.updatedAt = updatedAt;
   }
 

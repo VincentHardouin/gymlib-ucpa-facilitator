@@ -17,11 +17,13 @@ class ReservationRepository {
   }
 
   async save(reservation) {
-    const { code, status, updatedAt, start, court, activity } = reservation;
-    await this.#knex('reservations')
-      .insert({ code, status, updated_at: updatedAt, start_at: start, court, activity })
-      .onConflict('code')
-      .merge(['status', 'updated_at', 'start_at', 'court', 'activity']);
+    const { id, code, status, updatedAt, start, court, activity, is_subscription } = reservation;
+    const dtoReservation = await this.#knex('reservations')
+      .returning('*')
+      .insert({ id, code, status, updated_at: updatedAt, start_at: start, court, activity, is_subscription })
+      .onConflict('id')
+      .merge(['code', 'status', 'updated_at', 'start_at', 'court', 'activity', 'is_subscription'])
+    return this._toDomain(dtoReservation[0]);
   }
 
   async getActiveReservations() {
@@ -55,12 +57,14 @@ class ReservationRepository {
 
   _toDomain(reservationRaw) {
     return new Reservation({
+      id: reservationRaw.id,
       code: reservationRaw.code,
       status: reservationRaw.status,
       updatedAt: reservationRaw.updated_at,
       start: reservationRaw.start_at,
       court: reservationRaw.court,
       activity: reservationRaw.activity,
+      is_subscription: reservationRaw.is_subscription,
     });
   }
 }

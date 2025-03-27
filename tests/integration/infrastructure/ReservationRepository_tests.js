@@ -22,10 +22,11 @@ describe('Integration | Infrastructure | ReservationRepository', function () {
       const code = 'ABCD123';
       const reservation = Reservation.createFromCode(code);
 
-      await reservationRepository.save(reservation);
+      const returnedReservation = await reservationRepository.save(reservation);
+      expect(returnedReservation).to.deep.equal(new Reservation({ id: returnedReservation.id, code, status: reservation.status, updatedAt: returnedReservation.updatedAt, court: null, start: null, activity: null, is_subscription: false }));
 
-      const { created_at, updated_at, ...reservations } = await knex('reservations').where({ code }).first();
-      expect(reservations).to.deep.equal({ code, status: reservation.status, court: null, start_at: null, activity: null });
+      const { created_at: _1, updated_at: _2, id: _, ...savedReservation } = await knex('reservations').where({ code }).first();
+      expect(savedReservation).to.deep.equal({ code, status: reservation.status, court: null, start_at: null, activity: null, is_subscription: false });
     });
 
     context('when reservation already exists', function () {
@@ -34,12 +35,13 @@ describe('Integration | Infrastructure | ReservationRepository', function () {
         const reservation = Reservation.createFromCode(code);
 
         await reservationRepository.save(reservation);
+        const savedReservation = await reservationRepository.get(reservation.code);
 
-        reservation.markAsReserved({ start: new Date('2024-10-10'), court: '10', activity: 'Badminton' });
-        await reservationRepository.save(reservation);
+        savedReservation.markAsReserved({ start: new Date('2024-10-10'), court: '10', activity: 'Badminton' });
+        await reservationRepository.save(savedReservation);
 
-        const { created_at, updated_at, ...reservations } = await knex('reservations').where({ code }).first();
-        expect(reservations).to.deep.equal({ code, status: reservation.status, court: '10', start_at: new Date('2024-10-10'), activity: 'Badminton' });
+        const { created_at, updated_at, ...updatedReservation } = await knex('reservations').where({ code }).first();
+        expect(updatedReservation).to.deep.equal({ id: savedReservation.id, code, status: savedReservation.status, court: '10', start_at: new Date('2024-10-10'), activity: 'Badminton', is_subscription: false });
       });
     });
   });
