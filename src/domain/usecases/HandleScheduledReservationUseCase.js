@@ -9,7 +9,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 const RESERVATION_ACCEPTED_MESSAGE_CONTENT = 'MERCI POUR VOTRE RESERVATION !';
-const EXTRACT_INFORMATION_REGEXP = /(?<court>\d+)?(?<activity>[a-zA-Z\s]+) le (?<date>\d{2}-\d{2}-\d{4}) à (?<hour>\d{2}:\d{2})/;
+const EXTRACT_INFORMATION_REGEXP = /(?<court>\d+)?(?<activity>[a-zA-ZÀ-ú\s]+) le (?<date>\d{2}-\d{2}-\d{4}) à (?<hour>\d{2}:\d{2})/;
 const EXTRACT_CODE_REGEXP = /<p>(?<code>\d+)<\/p>/;
 
 export class HandleScheduledReservationUseCase {
@@ -50,7 +50,7 @@ export class HandleScheduledReservationUseCase {
 
     return {
       code: matchCode.groups.code,
-      court: match.groups.court,
+      court: match.groups.court || '',
       activity: match.groups.activity.trim(),
       start: dayjs.tz(`${formattedDate}T${match.groups.hour}:00`, 'Europe/Paris'),
     };
