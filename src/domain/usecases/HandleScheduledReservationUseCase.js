@@ -63,9 +63,7 @@ export class HandleScheduledReservationUseCase {
     catch (e) {
       if (e instanceof NotFoundError) {
         // We create a reservation in the event that not all the initial steps have been taken by this application.
-        const reservation = Reservation.createFromCode(code);
-        await this.reservationRepository.save(reservation);
-        return reservation;
+        return Reservation.createFromCode(code);
       }
       throw e;
     }
